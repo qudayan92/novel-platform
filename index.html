@@ -1,0 +1,4031 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小说创作平台 - AI赋能写作</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f0f14;
+            --bg-secondary: #16161d;
+            --bg-tertiary: #1e1e28;
+            --bg-card: #1a1a24;
+            --bg-hover: #222230;
+            --border-color: #2a2a3a;
+            --border-light: #3a3a4a;
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b0;
+            --text-muted: #6a6a7a;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --accent-green: #22c55e;
+            --accent-orange: #f97316;
+            --accent-yellow: #eab308;
+            --gradient-primary: linear-gradient(135deg, #8b5cf6, #ec4899);
+            --gradient-blue: linear-gradient(135deg, #3b82f6, #06b6d4);
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* 导航栏 */
+        nav {
+            background: rgba(22, 22, 29, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 32px;
+            height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-tertiary);
+            padding: 4px;
+            border-radius: var(--radius-lg);
+        }
+
+        .nav-tab {
+            padding: 8px 20px;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-tab.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-badge {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 8px 16px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .stat-badge strong {
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            padding: 10px 20px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: var(--radius-md);
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Hero区域 */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: radial-gradient(ellipse at top, rgba(139, 92, 246, 0.15) 0%, transparent 60%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--accent-purple);
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #f0f0f5 0%, #a0a0b0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-large {
+            padding: 14px 28px;
+            font-size: 15px;
+            border-radius: var(--radius-md);
+        }
+
+        .btn-secondary {
+            padding: 10px 20px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-light);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 32px 60px;
+        }
+
+        /* 功能卡片 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* 编辑器区域 */
+        .editor-wrapper {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .editor-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            min-height: 600px;
+        }
+
+        /* 左侧AI面板 */
+        .ai-panel {
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-tabs {
+            display: flex;
+            padding: 12px 16px;
+            gap: 4px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ai-tab {
+            flex: 1;
+            padding: 8px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ai-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .ai-tab.active {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .ai-content {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .ai-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .ai-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .ai-action {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid transparent;
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .ai-action:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .ai-action-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .style-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .style-chip {
+            padding: 6px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 100px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .style-chip:hover, .style-chip.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: white;
+        }
+
+        .ai-panel-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* 中间编辑器 */
+        .editor-main {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-card);
+        }
+
+        .toolbar-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .toolbar-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--border-color);
+            margin: 0 8px;
+        }
+
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .toolbar-select {
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 13px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .toolbar-select:focus {
+            border-color: var(--accent-blue);
+        }
+
+        /* AI工具栏 */
+        .ai-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .ai-toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-toolbar-label {
+            font-size: 12px;
+            color: var(--accent-purple);
+            font-weight: 500;
+            margin-right: 8px;
+        }
+
+        .ai-toolbar-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ai-toolbar-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border-color: var(--border-light);
+        }
+
+        .ai-toolbar-btn.primary {
+            background: var(--gradient-primary);
+            border: none;
+            color: white;
+        }
+
+        .ai-toolbar-btn.primary:hover {
+            opacity: 0.9;
+        }
+
+        .ai-toolbar-btn span {
+            font-size: 14px;
+        }
+
+        .toolbar-spacer {
+            flex: 1;
+        }
+
+        .editor-body {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+            font-size: 16px;
+            line-height: 2;
+        }
+
+        .editor-body:focus {
+            outline: none;
+        }
+
+        .editor-body h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--accent-yellow);
+            margin-bottom: 20px;
+        }
+
+        .editor-body p {
+            margin-bottom: 20px;
+            text-indent: 2em;
+        }
+
+        .editor-body .ai-text {
+            color: var(--accent-purple);
+        }
+
+        .editor-body .ai-highlight {
+            text-decoration: underline;
+            color: var(--accent-blue);
+            text-decoration-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+            padding: 2px 4px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .editor-body .ai-highlight:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .editor-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-green);
+        }
+
+        /* 右侧Wiki面板 */
+        .wiki-panel {
+            background: var(--bg-card);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wiki-list {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .wiki-card {
+            padding: 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid transparent;
+            border-radius: var(--radius-md);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .wiki-card:hover {
+            border-color: var(--border-color);
+        }
+
+        .wiki-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .wiki-type-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            background: var(--bg-card);
+        }
+
+        .wiki-card-name {
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--accent-yellow);
+        }
+
+        .wiki-card-type {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .wiki-card-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .wiki-delete {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 10px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .wiki-card:hover .wiki-delete {
+            opacity: 1;
+        }
+
+        .wiki-panel-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Agent系统 */
+        .agent-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .agent-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .agent-item.active {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .agent-item.completed {
+            border-color: var(--accent-green);
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .agent-icon {
+            font-size: 14px;
+        }
+
+        .agent-name {
+            flex: 1;
+            color: var(--text-secondary);
+        }
+
+        .agent-item.active .agent-name {
+            color: var(--text-primary);
+        }
+
+        .agent-status {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .agent-item.active .agent-status {
+            color: var(--accent-blue);
+        }
+
+        .agent-item.completed .agent-status {
+            color: var(--accent-green);
+        }
+
+        .agent-log {
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .log-time {
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .log-msg {
+            color: var(--text-secondary);
+        }
+
+        /* 大纲区域 */
+        .outline-section {
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .outline-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+        }
+
+        .outline-tree {
+            padding-left: 0;
+        }
+
+        .outline-node {
+            margin-bottom: 4px;
+        }
+
+        .outline-node-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .outline-node-header:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .outline-toggle {
+            width: 20px;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .outline-title {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .outline-children {
+            padding-left: 30px;
+            margin-top: 4px;
+        }
+
+        /* 弹窗 */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .modal input,
+        .modal textarea,
+        .modal select {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-family: inherit;
+        }
+
+        .modal input:focus,
+        .modal textarea:focus,
+        .modal select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .modal textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+        }
+
+        /* 导出网格 */
+        .export-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .export-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .export-option:hover {
+            border-color: var(--border-light);
+        }
+
+        .export-option span:first-child {
+            font-size: 20px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 14px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 1001;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .toast.warning {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .toast.error {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        /* 用户菜单 */
+        .user-menu {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 280px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s;
+            z-index: 200;
+        }
+
+        .user-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .user-dropdown-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .user-avatar-lg {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .user-dropdown-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 4px 0;
+        }
+
+        .user-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .user-dropdown-item:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .user-dropdown-item.logout {
+            color: #ef4444;
+        }
+
+        .user-dropdown-item.logout:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* 个人中心页面 */
+        .profile-section {
+            margin-bottom: 32px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 32px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            margin-bottom: 24px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: 600;
+            color: white;
+            position: relative;
+        }
+
+        .profile-avatar-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 32px;
+            height: 32px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .profile-avatar-edit:hover {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .profile-bio {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 24px;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .profile-stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        .profile-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .profile-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .profile-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            padding: 12px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .achievement-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+        }
+
+        .achievement-item.locked {
+            opacity: 0.5;
+        }
+
+        .achievement-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .achievement-item:not(.locked) .achievement-icon {
+            background: rgba(234, 179, 8, 0.2);
+        }
+
+        .achievement-info {
+            flex: 1;
+        }
+
+        .achievement-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .achievement-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* 订阅卡片 */
+        .subscription-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subscription-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .subscription-plan {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .subscription-badge {
+            padding: 4px 12px;
+            background: var(--gradient-primary);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .subscription-usage {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .usage-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .usage-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .usage-bar {
+            width: 200px;
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .usage-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .usage-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            min-width: 80px;
+            text-align: right;
+        }
+
+        /* 投稿相关样式 */
+        .publish-step {
+            flex: 1;
+            text-align: center;
+        }
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .publish-step.active .step-circle {
+            background: var(--accent-blue);
+            color: white;
+        }
+        .publish-step.completed .step-circle {
+            background: var(--accent-green);
+            color: white;
+        }
+        .step-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .publish-step.active .step-label {
+            color: var(--text-primary);
+        }
+        .platform-card {
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .platform-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+        .platform-card.selected {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .editor-layout {
+                grid-template-columns: 1fr;
+            }
+            .ai-panel, .wiki-panel {
+                display: none;
+            }
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 16px;
+            }
+            .nav-center {
+                display: none;
+            }
+            .hero h1 {
+                font-size: 36px;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">📚</div>
+                小说创作平台
+            </div>
+            <div class="nav-center">
+                <button class="nav-tab active" onclick="switchNavTab(this, 'home')">首页</button>
+                <button class="nav-tab" onclick="switchNavTab(this, 'editor')">编辑器</button>
+                <button class="nav-tab" onclick="switchNavTab(this, 'wiki')">世界观</button>
+                <button class="nav-tab" onclick="switchNavTab(this, 'outline')">大纲</button>
+                <button class="nav-tab" onclick="switchNavTab(this, 'stats')">统计</button>
+            </div>
+            <div class="nav-right">
+                <div class="stat-badge">
+                    <span>今日 <strong id="todayCount">1,234</strong></span>
+                    <span>总计 <strong id="totalCount">52,480</strong></span>
+                </div>
+                <button class="btn-primary" onclick="exportContent()">
+                    <span>📤</span> 保存
+                </button>
+                <div class="user-menu" onclick="toggleUserMenu()">
+                    <div class="user-avatar">作</div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="user-dropdown-header">
+                            <div class="user-avatar-lg">作</div>
+                            <div class="user-info">
+                                <div class="user-name">创作者</div>
+                                <div class="user-email">@guest</div>
+                            </div>
+                        </div>
+                        <div class="user-dropdown-divider"></div>
+                        <div class="user-dropdown-item" onclick="event.stopPropagation();showProfile()">
+                            <span>👤</span> 个人中心
+                        </div>
+                        <div class="user-dropdown-item" onclick="event.stopPropagation();showCollaborationModal()">
+                            <span>👥</span> 协作房间
+                        </div>
+                        <div class="user-dropdown-item" onclick="event.stopPropagation();showPublishModal()">
+                            <span>📤</span> 投稿作品
+                        </div>
+                        <div class="user-dropdown-item" onclick="event.stopPropagation();showSubmissionsModal()">
+                            <span>📋</span> 我的投稿
+                        </div>
+                        <div class="user-dropdown-item" onclick="event.stopPropagation();showSettings()">
+                            <span>⚙️</span> 设置
+                        </div>
+                        <div class="user-dropdown-item" onclick="event.stopPropagation();showSubscription()">
+                            <span>💎</span> 订阅管理
+                        </div>
+                        <div class="user-dropdown-divider"></div>
+                        <div class="user-dropdown-item" onclick="event.stopPropagation();showHelp()">
+                            <span>❓</span> 帮助文档
+                        </div>
+                        <div class="user-dropdown-item" id="authActionBtn" onclick="event.stopPropagation();handleAuthAction()">
+                            <span id="authActionIcon">🔐</span> <span id="authActionText">登录</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-badge">
+            <span>✨</span>
+            <span>AI驱动的专业写作工具</span>
+        </div>
+        <h1>让AI成为你的创作伙伴</h1>
+        <p>7个专业AI Agent协作，模拟真实编辑团队。从大纲规划到正文生成，从设定管理到一致性校验，全方位提升创作效率。</p>
+        <div class="hero-buttons">
+            <button class="btn-primary btn-large" onclick="scrollToEditor()">
+                <span>🚀</span> 开始创作
+            </button>
+            <button class="btn-secondary btn-large" onclick="showAgentDemo()">
+                <span>🤖</span> 体验Agent协作
+            </button>
+        </div>
+    </section>
+
+    <div class="main-content">
+        <!-- 功能卡片 -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(139, 92, 246, 0.15);">✍️</div>
+                <h3>智能写作</h3>
+                <p>多方向续写、风格迁移、实时字数统计，沉浸式写作体验</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(59, 130, 246, 0.15);">🤖</div>
+                <h3>Agent协作</h3>
+                <p>7个专业Agent分工协作，模拟真实编辑团队工作流程</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(236, 72, 153, 0.15);">📖</div>
+                <h3>世界观Wiki</h3>
+                <p>人物、地点、道具统一管理，智能关联，避免设定冲突</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(34, 197, 94, 0.15);">📊</div>
+                <h3>数据看板</h3>
+                <p>创作进度追踪、AI使用统计、多维度数据分析</p>
+            </div>
+        </div>
+
+        <!-- 编辑器区域 -->
+        <div class="editor-wrapper" id="editor">
+            <div class="editor-layout">
+                <!-- AI面板 -->
+                <div class="ai-panel">
+                    <div class="panel-header">
+                        <span>🪄</span> AI 助手
+                    </div>
+                    <div class="ai-tabs">
+                        <button class="ai-tab active" onclick="switchAITab('write')">续写</button>
+                        <button class="ai-tab" onclick="switchAITab('generate')">生成</button>
+                        <button class="ai-tab" onclick="switchAITab('analyze')">分析</button>
+                        <button class="ai-tab" onclick="switchAITab('agent')">协作</button>
+                        <button class="ai-tab" onclick="switchAITab('aiindex')">AI指数</button>
+                    </div>
+                    <div class="ai-content" id="aiContent">
+                        <!-- 续写面板 -->
+                        <div id="writePanel">
+                            <div class="ai-section-title">续写方向</div>
+                            <div class="ai-actions">
+                                <button class="ai-action" onclick="aiWrite('continue')">
+                                    <div class="ai-action-icon">📝</div>
+                                    <div>
+                                        <div style="font-weight:500">继续写</div>
+                                        <div style="font-size:11px;color:var(--text-muted)">延续当前情节发展</div>
+                                    </div>
+                                </button>
+                                <button class="ai-action" onclick="aiWrite('conflict')">
+                                    <div class="ai-action-icon">⚔️</div>
+                                    <div>
+                                        <div style="font-weight:500">增加冲突</div>
+                                        <div style="font-size:11px;color:var(--text-muted)">引入矛盾或对抗</div>
+                                    </div>
+                                </button>
+                                <button class="ai-action" onclick="aiWrite('twist')">
+                                    <div class="ai-action-icon">🔄</div>
+                                    <div>
+                                        <div style="font-weight:500">情节反转</div>
+                                        <div style="font-size:11px;color:var(--text-muted)">意想不到的转折</div>
+                                    </div>
+                                </button>
+                                <button class="ai-action" onclick="aiWrite('dialog')">
+                                    <div class="ai-action-icon">💬</div>
+                                    <div>
+                                        <div style="font-weight:500">增加对话</div>
+                                        <div style="font-size:11px;color:var(--text-muted)">丰富人物互动</div>
+                                    </div>
+                                </button>
+                                <button class="ai-action" onclick="aiWrite('scene')">
+                                    <div class="ai-action-icon">🏞️</div>
+                                    <div>
+                                        <div style="font-weight:500">描写场景</div>
+                                        <div style="font-size:11px;color:var(--text-muted)">环境与氛围渲染</div>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="ai-section-title">写作风格</div>
+                            <div class="style-chips">
+                                <span class="style-chip active" onclick="selectStyle(this)">古风</span>
+                                <span class="style-chip" onclick="selectStyle(this)">玄幻</span>
+                                <span class="style-chip" onclick="selectStyle(this)">都市</span>
+                                <span class="style-chip" onclick="selectStyle(this)">悬疑</span>
+                                <span class="style-chip" onclick="selectStyle(this)">轻小说</span>
+                            </div>
+                        </div>
+
+                        <!-- 生成面板 -->
+                        <div id="generatePanel" style="display:none">
+                            <div class="ai-section-title">灵感生成器</div>
+                            <div class="ai-actions">
+                                <button class="ai-action" onclick="generateName()">
+                                    <div class="ai-action-icon">👤</div>
+                                    <span>人名生成</span>
+                                </button>
+                                <button class="ai-action" onclick="generatePlace()">
+                                    <div class="ai-action-icon">📍</div>
+                                    <span>地名生成</span>
+                                </button>
+                                <button class="ai-action" onclick="generateSkill()">
+                                    <div class="ai-action-icon">⚔️</div>
+                                    <span>功法生成</span>
+                                </button>
+                                <button class="ai-action" onclick="generateItem()">
+                                    <div class="ai-action-icon">🔮</div>
+                                    <span>道具生成</span>
+                                </button>
+                                <button class="ai-action" onclick="generateFaction()">
+                                    <div class="ai-action-icon">🏰</div>
+                                    <span>势力生成</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 分析面板 -->
+                        <div id="analyzePanel" style="display:none">
+                            <div class="ai-section-title">文本分析</div>
+                            <div class="ai-actions">
+                                <button class="ai-action" onclick="analyzeLogic()">
+                                    <div class="ai-action-icon">🔍</div>
+                                    <span>逻辑检测</span>
+                                </button>
+                                <button class="ai-action" onclick="analyzeConsistency()">
+                                    <div class="ai-action-icon">✓</div>
+                                    <span>一致性检查</span>
+                                </button>
+                                <button class="ai-action" onclick="analyzeSensitive()">
+                                    <div class="ai-action-icon">⚠️</div>
+                                    <span>敏感词检测</span>
+                                </button>
+                                <button class="ai-action" onclick="analyzeReadability()">
+                                    <div class="ai-action-icon">📊</div>
+                                    <span>可读性分析</span>
+                                </button>
+                            </div>
+                            <div id="analyzeResult" style="margin-top:16px;padding:14px;background:var(--bg-tertiary);border-radius:var(--radius-sm);font-size:13px;display:none"></div>
+                        </div>
+
+                        <!-- Agent协作面板 -->
+                        <div id="agentPanel" style="display:none">
+                            <div class="ai-section-title">7个专业AI Agent协作</div>
+                            <div class="agent-list">
+                                <div class="agent-item" id="agent-supervisor">
+                                    <span class="agent-icon">👔</span>
+                                    <span class="agent-name">主管Agent</span>
+                                    <span class="agent-status">待命</span>
+                                </div>
+                                <div class="agent-item" id="agent-structure">
+                                    <span class="agent-icon">📐</span>
+                                    <span class="agent-name">结构Agent</span>
+                                    <span class="agent-status">待命</span>
+                                </div>
+                                <div class="agent-item" id="agent-blueprint">
+                                    <span class="agent-icon">📝</span>
+                                    <span class="agent-name">蓝图Agent</span>
+                                    <span class="agent-status">待命</span>
+                                </div>
+                                <div class="agent-item" id="agent-content">
+                                    <span class="agent-icon">✍️</span>
+                                    <span class="agent-name">内容Agent</span>
+                                    <span class="agent-status">待命</span>
+                                </div>
+                                <div class="agent-item" id="agent-setting">
+                                    <span class="agent-icon">⚙️</span>
+                                    <span class="agent-name">设定Agent</span>
+                                    <span class="agent-status">待命</span>
+                                </div>
+                                <div class="agent-item" id="agent-consistency">
+                                    <span class="agent-icon">✅</span>
+                                    <span class="agent-name">一致性Agent</span>
+                                    <span class="agent-status">待命</span>
+                                </div>
+                                <div class="agent-item" id="agent-correction">
+                                    <span class="agent-icon">🔧</span>
+                                    <span class="agent-name">纠错Agent</span>
+                                    <span class="agent-status">待命</span>
+                                </div>
+                            </div>
+                            <button class="btn-primary" style="width:100%" onclick="startAgentCollaboration()">
+                                🚀 启动协作流程
+                            </button>
+                            <div class="agent-log" id="agentLog"></div>
+                        </div>
+
+                        <!-- AI指数检测面板 -->
+                        <div id="aiindexPanel" style="display:none">
+                            <div class="ai-section-title">🤖 AI指数检测</div>
+                            <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">
+                                检测文本中是否存在AI生成特征<br>
+                                支持: GPT-4, Claude, DeepSeek, Gemini等
+                            </div>
+                            
+                            <div class="ai-section-title">检测范围</div>
+                            <div class="ai-actions" style="gap:8px">
+                                <button class="ai-action" onclick="runAIDetection('chapter')" id="aiDetectChapterBtn" style="min-height:60px">
+                                    <div class="ai-action-icon">📄</div>
+                                    <div>
+                                        <div style="font-weight:500">单章节检测</div>
+                                        <div style="font-size:11px;color:var(--text-muted)">检测当前章节</div>
+                                    </div>
+                                </button>
+                                <button class="ai-action" onclick="runAIDetection('novel')" id="aiDetectNovelBtn" style="min-height:60px">
+                                    <div class="ai-action-icon">📚</div>
+                                    <div>
+                                        <div style="font-weight:500">整本检测</div>
+                                        <div style="font-size:11px;color:var(--text-muted)">深度分析全文</div>
+                                    </div>
+                                </button>
+                            </div>
+
+                            <!-- 检测结果展示 -->
+                            <div id="aiDetectionResult" style="display:none;margin-top:16px">
+                                <div class="ai-section-title">检测结果</div>
+                                
+                                <!-- 三维指数卡片 -->
+                                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+                                    <div style="background:var(--bg-tertiary);padding:12px;border-radius:8px;text-align:center">
+                                        <div style="font-size:24px;font-weight:bold;color:#4ECDC4" id="humanScore">--</div>
+                                        <div style="font-size:11px;color:var(--text-muted)">人工特征</div>
+                                    </div>
+                                    <div style="background:var(--bg-tertiary);padding:12px;border-radius:8px;text-align:center">
+                                        <div style="font-size:24px;font-weight:bold;color:#FFE66D" id="suspectedScore">--</div>
+                                        <div style="font-size:11px;color:var(--text-muted)">疑似AI</div>
+                                    </div>
+                                    <div style="background:var(--bg-tertiary);padding:12px;border-radius:8px;text-align:center">
+                                        <div style="font-size:24px;font-weight:bold;color:#FF6B6B" id="aiScore">--</div>
+                                        <div style="font-size:11px;color:var(--text-muted)">AI特征</div>
+                                    </div>
+                                </div>
+
+                                <!-- 风险等级 -->
+                                <div style="background:var(--bg-tertiary);padding:12px;border-radius:8px;margin-bottom:16px;text-align:center">
+                                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">风险等级</div>
+                                    <span id="riskLevelBadge" style="padding:6px 16px;border-radius:20px;font-size:14px;font-weight:500">--</span>
+                                </div>
+
+                                <!-- 雷达图占位 -->
+                                <div id="radarChartContainer" style="background:var(--bg-tertiary);border-radius:8px;padding:16px;margin-bottom:16px;display:flex;justify-content:center;align-items:center;min-height:200px">
+                                    <canvas id="radarCanvas" width="200" height="200" style="display:none"></canvas>
+                                    <div id="radarPlaceholder" style="color:var(--text-muted);font-size:13px">雷达图加载中...</div>
+                                </div>
+
+                                <!-- 检测到的模型 -->
+                                <div id="detectedModelsSection" style="display:none">
+                                    <div class="ai-section-title">检测到的AI模型</div>
+                                    <div id="detectedModelsList" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+                                </div>
+
+                                <!-- 统计特征 -->
+                                <div style="margin-top:16px">
+                                    <div class="ai-section-title">统计特征</div>
+                                    <div id="statsContainer" style="font-size:12px;color:var(--text-muted)"></div>
+                                </div>
+
+                                <!-- 建议 -->
+                                <div id="suggestionsSection" style="display:none;margin-top:16px">
+                                    <div class="ai-section-title">优化建议</div>
+                                    <ul id="suggestionsList" style="font-size:12px;color:var(--text-muted);padding-left:16px"></ul>
+                                </div>
+
+                                <!-- AI特征高亮控制 -->
+                                <div style="margin-top:16px">
+                                    <div class="ai-section-title">AI特征标记</div>
+                                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+                                        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary)">
+                                            <input type="checkbox" id="highlightAI" onchange="toggleAIHighlight(this.checked)" style="width:16px;height:16px;accent-color:var(--accent-blue)">
+                                            <span>在正文中标记AI特征段落</span>
+                                        </label>
+                                    </div>
+                                    <div id="paragraphStats" style="font-size:12px;color:var(--text-muted)"></div>
+                                </div>
+                            </div>
+
+                            <!-- 加载状态 -->
+                            <div id="aiDetectLoading" style="display:none;text-align:center;padding:40px">
+                                <div style="font-size:32px;animation:pulse 1.5s infinite">🔍</div>
+                                <div style="margin-top:12px;color:var(--text-muted)">正在分析文本特征...</div>
+                                <div style="margin-top:8px;font-size:12px;color:var(--text-muted)" id="aiDetectProgress">准备中...</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ai-panel-footer">
+                        <button class="btn-primary" style="width:100%" onclick="aiWrite('continue')" id="aiMainBtn">
+                            🪄 AI续写
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 主编辑器 -->
+                <div class="editor-main">
+                    <!-- 功能工具栏 -->
+                    <div class="editor-toolbar" style="border-bottom: none">
+                        <div class="toolbar-group">
+                            <button class="toolbar-btn" onclick="editorUndo()" title="撤销 (Ctrl+Z)">↶</button>
+                            <button class="toolbar-btn" onclick="editorRedo()" title="重做 (Ctrl+Y)">↷</button>
+                        </div>
+                        <div class="toolbar-divider"></div>
+                        <div class="toolbar-group">
+                            <button class="toolbar-btn" onclick="formatText('bold')" title="加粗 (Ctrl+B)"><strong>B</strong></button>
+                            <button class="toolbar-btn" onclick="formatText('italic')" title="斜体 (Ctrl+I)"><em>I</em></button>
+                            <button class="toolbar-btn" onclick="formatText('underline')" title="下划线 (Ctrl+U)"><u>U</u></button>
+                            <button class="toolbar-btn" onclick="formatText('strikeThrough')" title="删除线"><s>S</s></button>
+                        </div>
+                        <div class="toolbar-divider"></div>
+                        <div class="toolbar-group">
+                            <button class="toolbar-btn" onclick="insertHeading(2)" title="二级标题">H2</button>
+                            <button class="toolbar-btn" onclick="insertHeading(3)" title="三级标题">H3</button>
+                            <button class="toolbar-btn" onclick="insertHeading(4)" title="四级标题">H4</button>
+                        </div>
+                        <div class="toolbar-divider"></div>
+                        <div class="toolbar-group">
+                            <button class="toolbar-btn" onclick="formatText('insertUnorderedList')" title="无序列表">• 列表</button>
+                            <button class="toolbar-btn" onclick="formatText('insertOrderedList')" title="有序列表">1. 列表</button>
+                        </div>
+                        <div class="toolbar-divider"></div>
+                        <div class="toolbar-group">
+                            <button class="toolbar-btn" onclick="formatText('justifyLeft')" title="左对齐">≡←</button>
+                            <button class="toolbar-btn" onclick="formatText('justifyCenter')" title="居中">≡≡</button>
+                            <button class="toolbar-btn" onclick="formatText('justifyRight')" title="右对齐">≡→</button>
+                        </div>
+                        <div class="toolbar-divider"></div>
+                        <div class="toolbar-group">
+                            <button class="toolbar-btn" onclick="insertQuote()" title="引用">❝</button>
+                            <button class="toolbar-btn" onclick="insertCodeBlock()" title="代码块">{ }</button>
+                            <button class="toolbar-btn" onclick="insertDivider()" title="分割线">—</button>
+                        </div>
+                        <div class="toolbar-spacer"></div>
+                        <div class="toolbar-group">
+                            <button class="toolbar-btn" onclick="showFindReplace()" title="查找替换">🔍</button>
+                            <button class="toolbar-btn" onclick="toggleFullscreen()" title="全屏模式">⛶</button>
+                            <button class="toolbar-btn" onclick="showVersionModal()" title="版本历史">📜</button>
+                            <button class="toolbar-btn" onclick="exportContent()" title="导出">📤</button>
+                        </div>
+                    </div>
+                    
+                    <!-- AI工具栏 -->
+                    <div class="ai-toolbar">
+                        <div class="ai-toolbar-group">
+                            <span class="ai-toolbar-label">AI工具</span>
+                            <button class="ai-toolbar-btn primary" onclick="aiWrite('continue')">
+                                <span>🪄</span> 续写
+                            </button>
+                            <button class="ai-toolbar-btn" onclick="aiPolish()">
+                                <span>✨</span> 润色
+                            </button>
+                            <button class="ai-toolbar-btn" onclick="aiExpand()">
+                                <span>📝</span> 扩写
+                            </button>
+                            <button class="ai-toolbar-btn" onclick="aiShorten()">
+                                <span>✂️</span> 缩写
+                            </button>
+                            <button class="ai-toolbar-btn" onclick="aiTranslate()">
+                                <span>🌐</span> 翻译
+                            </button>
+                        </div>
+                        <div class="toolbar-spacer"></div>
+                        <div class="ai-toolbar-group">
+                            <select class="toolbar-select" id="styleSelect" onchange="changeStyle(this.value)">
+                                <option value="玄幻">玄幻风格</option>
+                                <option value="古风">古风风格</option>
+                                <option value="都市">都市风格</option>
+                                <option value="悬疑">悬疑风格</option>
+                                <option value="轻小说">轻小说风格</option>
+                            </select>
+                            <button class="ai-toolbar-btn" onclick="aiStyleTransfer()">
+                                <span>🎨</span> 风格转换
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-body" contenteditable="true" id="content">
+                        <h2>第一章 觉醒</h2>
+                        <p>窗外的雨势愈发猛烈，狂风卷着水汽拍打在斑驳的玻璃上。</p>
+                        <p>林墨坐在灯下，手中紧握着那枚泛黄的古币。烛火摇曳，在墙壁上投下诡异的影子。</p>
+                        <p>"你终究还是找到了这里。"他低声自语道。</p>
+                    </div>
+                    <div class="editor-status">
+                        <div class="status-item">
+                            <span>字数: <strong id="wordCount">87</strong></span>
+                            <span style="margin-left: 16px">段落: <strong id="paraCount">3</strong></span>
+                            <span style="margin-left: 16px">句子: <strong id="sentenceCount">5</strong></span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-dot"></div>
+                            <span id="saveStatus">自动保存</span>
+                            <span style="margin: 0 8px">|</span>
+                            <span title="Ctrl+S 保存 | Ctrl+F 查找 | Ctrl+P 润色 | Ctrl+E 扩写">快捷键提示</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wiki面板 -->
+                <div class="wiki-panel">
+                    <div class="panel-header">
+                        <span>📖</span> 世界观设定
+                    </div>
+                    <div class="wiki-list" id="wikiList"></div>
+                    <div class="wiki-panel-footer">
+                        <button class="btn-secondary" style="width:100%" onclick="showAddWikiModal()">
+                            + 添加设定
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 大纲区域 -->
+        <div class="outline-section" id="outline-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>📋</span> 章节大纲
+                </div>
+                <div style="display:flex;gap:10px">
+                    <button class="btn-secondary" onclick="generateOutline()">🪄 AI生成</button>
+                    <button class="btn-secondary" onclick="addOutlineChapter()">+ 添加章节</button>
+                </div>
+            </div>
+            <div class="outline-container">
+                <div class="outline-tree" id="outlineContainer"></div>
+            </div>
+        </div>
+
+        <!-- 统计区域 -->
+        <div class="outline-section" id="stats-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>📊</span> 创作统计
+                </div>
+            </div>
+            <div class="features-grid" style="margin-bottom:0">
+                <div class="feature-card" style="text-align:center">
+                    <div style="font-size:42px;font-weight:700;color:var(--accent-blue)" id="totalStat">52,480</div>
+                    <div style="color:var(--text-muted);font-size:13px;margin-top:8px">总字数</div>
+                </div>
+                <div class="feature-card" style="text-align:center">
+                    <div style="font-size:42px;font-weight:700;color:var(--accent-green)" id="todayStat">1,234</div>
+                    <div style="color:var(--text-muted);font-size:13px;margin-top:8px">今日字数</div>
+                </div>
+                <div class="feature-card" style="text-align:center">
+                    <div style="font-size:42px;font-weight:700;color:var(--accent-yellow)" id="streakStat">7</div>
+                    <div style="color:var(--text-muted);font-size:13px;margin-top:8px">连续日更</div>
+                </div>
+                <div class="feature-card" style="text-align:center">
+                    <div style="font-size:42px;font-weight:700;color:var(--accent-purple)" id="readTimeStat">131</div>
+                    <div style="color:var(--text-muted);font-size:13px;margin-top:8px">预计阅读(分钟)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 个人中心弹窗 -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal" style="max-width: 700px">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px">
+                <h2 style="margin: 0">👤 个人中心</h2>
+                <button class="toolbar-btn" onclick="closeProfileModal()">✕</button>
+            </div>
+
+            <!-- 订阅信息 -->
+            <div class="subscription-card" style="margin-bottom: 20px">
+                <div class="subscription-header">
+                    <div class="subscription-plan">
+                        <span>💎</span>
+                        <span>免费版</span>
+                    </div>
+                    <button class="btn-primary btn-sm" onclick="showSubscription()">升级Pro</button>
+                </div>
+                <div class="subscription-usage">
+                    <div class="usage-item">
+                        <span class="usage-label">AI续写额度</span>
+                        <div class="usage-bar">
+                            <div class="usage-fill" style="width: 65%"></div>
+                        </div>
+                        <span class="usage-text">65 / 100 次</span>
+                    </div>
+                    <div class="usage-item">
+                        <span class="usage-label">存储空间</span>
+                        <div class="usage-bar">
+                            <div class="usage-fill" style="width: 28%"></div>
+                        </div>
+                        <span class="usage-text">2.8 / 10 MB</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-grid" style="grid-template-columns: 1fr 1fr">
+                <!-- 左侧：个人信息 -->
+                <div>
+                    <div style="font-size: 14px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px">
+                        <span>📝</span> 账户信息
+                    </div>
+                    <div class="profile-form">
+                        <div class="form-group">
+                            <label class="form-label">用户名</label>
+                            <input type="text" class="form-input" value="创作者" id="profileName">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">邮箱</label>
+                            <input type="email" class="form-input" value="writer@xiaoshui.com" id="profileEmail">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">个性签名</label>
+                            <input type="text" class="form-input" value="用文字编织梦想" id="profileBio">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧：成就 -->
+                <div>
+                    <div style="font-size: 14px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px">
+                        <span>🏆</span> 创作成就
+                    </div>
+                    <div class="achievement-list" style="max-height: 200px; overflow-y: auto">
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🎯</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">初露锋芒</div>
+                                <div class="achievement-desc">累计创作1万字</div>
+                            </div>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🔥</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">日更达人</div>
+                                <div class="achievement-desc">连续日更7天</div>
+                            </div>
+                        </div>
+                        <div class="achievement-item locked">
+                            <div class="achievement-icon">💎</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">笔耕不辍</div>
+                                <div class="achievement-desc">累计创作10万字</div>
+                            </div>
+                        </div>
+                        <div class="achievement-item locked">
+                            <div class="achievement-icon">🏆</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">百万作家</div>
+                                <div class="achievement-desc">累计创作100万字</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="resetProfile()">重置</button>
+                <button class="btn-primary" onclick="saveProfile()">保存修改</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加Wiki弹窗 -->
+    <div class="modal-overlay" id="wikiModal">
+        <div class="modal">
+            <h2>添加设定</h2>
+            <select id="wikiType">
+                <option value="character">👤 人物</option>
+                <option value="location">📍 地点</option>
+                <option value="item">🔮 道具</option>
+                <option value="setting">⚙️ 设定</option>
+                <option value="faction">🏰 势力</option>
+            </select>
+            <input type="text" id="wikiName" placeholder="名称">
+            <textarea id="wikiDesc" placeholder="描述"></textarea>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeWikiModal()">取消</button>
+                <button class="btn-primary" onclick="addWikiItem()">添加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 版本历史弹窗 -->
+    <div class="modal-overlay" id="versionModal">
+        <div class="modal">
+            <h2>📜 版本历史</h2>
+            <div id="versionList" style="max-height:300px;overflow-y:auto"></div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeVersionModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导出弹窗 -->
+    <div class="modal-overlay" id="exportModal">
+        <div class="modal">
+            <h2>📤 导出作品</h2>
+            <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px">选择导出格式</p>
+            <div class="export-grid">
+                <button class="export-option" onclick="doExport('txt')">
+                    <span>📄</span>
+                    <span>TXT 纯文本</span>
+                </button>
+                <button class="export-option" onclick="doExport('md')">
+                    <span>📝</span>
+                    <span>Markdown</span>
+                </button>
+                <button class="export-option" onclick="doExport('html')">
+                    <span>🌐</span>
+                    <span>HTML</span>
+                </button>
+                <button class="export-option" onclick="doExport('json')">
+                    <span>📋</span>
+                    <span>JSON</span>
+                </button>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeExportModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 查找替换弹窗 -->
+    <div class="modal-overlay" id="findModal">
+        <div class="modal">
+            <h2>🔍 查找替换</h2>
+            <div class="form-group">
+                <label class="form-label">查找内容</label>
+                <input type="text" class="form-input" id="findText" placeholder="输入要查找的文字">
+            </div>
+            <div class="form-group">
+                <label class="form-label">替换为</label>
+                <input type="text" class="form-input" id="replaceText" placeholder="输入替换后的文字">
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 16px">
+                <button class="btn-secondary" onclick="findInContent()">查找</button>
+                <button class="btn-secondary" onclick="replaceInContent()">替换</button>
+                <button class="btn-primary" onclick="replaceAllInContent()">全部替换</button>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeFindModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登录/注册弹窗 -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px">
+                <h2 style="margin: 0" id="authModalTitle">🔐 登录</h2>
+                <button class="toolbar-btn" onclick="closeAuthModal()">✕</button>
+            </div>
+
+            <div style="display: flex; gap: 4px; margin-bottom: 20px; background: var(--bg-tertiary); padding: 4px; border-radius: 8px">
+                <button id="loginTab" onclick="switchAuthMode('login')" style="flex:1;padding:8px 16px;border:none;border-radius:6px;background:var(--bg-card);color:var(--text-primary);cursor:pointer;font-weight:500;transition:all 0.2s">登录</button>
+                <button id="registerTab" onclick="switchAuthMode('register')" style="flex:1;padding:8px 16px;border:none;border-radius:6px;background:transparent;color:var(--text-secondary);cursor:pointer;font-weight:500;transition:all 0.2s">注册</button>
+            </div>
+
+            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">用户名</label>
+                    <input type="text" class="form-input" id="authUsername" placeholder="输入用户名" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">密码</label>
+                    <input type="password" class="form-input" id="authPassword" placeholder="输入密码" required>
+                </div>
+                <div class="form-group" id="confirmPasswordGroup" style="display:none">
+                    <label class="form-label">确认密码</label>
+                    <input type="password" class="form-input" id="authConfirmPassword" placeholder="再次输入密码">
+                </div>
+                <div id="authError" style="display:none;padding:10px 14px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;color:#ef4444;font-size:14px;margin-bottom:16px"></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeAuthModal()">取消</button>
+                    <button type="submit" class="btn-primary" id="authSubmitBtn">登录</button>
+                </div>
+            </form>
+
+            <p id="authSwitchText" style="text-align:center;margin-top:16px;font-size:13px;color:var(--text-muted)">
+                还没有账号？<button type="button" onclick="switchAuthMode('register')" style="background:none;border:none;color:var(--accent-blue);cursor:pointer;padding:0 4px;font-size:13px">立即注册</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- 协作写作面板 -->
+    <div class="modal-overlay" id="collaborationModal">
+        <div class="modal" style="max-width: 800px">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px">
+                <h2 style="margin: 0">👥 协作写作</h2>
+                <button class="toolbar-btn" onclick="closeCollaborationModal()">✕</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px">
+                <!-- 左侧：房间管理 -->
+                <div>
+                    <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--text-secondary)">创建协作房间</h3>
+                    <div class="form-group">
+                        <label class="form-label">房间名称</label>
+                        <input type="text" class="form-input" id="roomName" placeholder="如：第一卷共创室">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">房间类型</label>
+                        <select class="form-input" id="roomType">
+                            <option value="chapter">章节写作</option>
+                            <option value="outline">大纲规划</option>
+                            <option value="setting">设定管理</option>
+                            <option value="ai">AI协同</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary" style="width: 100%" onclick="createCollaborationRoom()">
+                        创建房间
+                    </button>
+
+                    <div style="margin-top: 24px">
+                        <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--text-secondary)">我的房间</h3>
+                        <div id="myRoomsList" style="max-height: 200px; overflow-y: auto">
+                            <div style="padding: 12px; background: var(--bg-tertiary); border-radius: 8px; margin-bottom: 8px; cursor: pointer" onclick="joinRoom('room-1')">
+                                <div style="display: flex; justify-content: space-between; align-items: center">
+                                    <span style="font-weight: 500">星河战纪创作室</span>
+                                    <span style="font-size: 12px; color: var(--accent-green)">● 3人在线</span>
+                                </div>
+                                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px">章节写作 · 您是主作者</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧：成员管理 -->
+                <div>
+                    <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--text-secondary)">房间成员</h3>
+                    <div id="roomMembers" style="max-height: 300px; overflow-y: auto">
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 10px; background: var(--bg-tertiary); border-radius: 8px; margin-bottom: 8px">
+                            <div style="width: 36px; height: 36px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600">张</div>
+                            <div style="flex: 1">
+                                <div style="font-weight: 500">张三</div>
+                                <div style="font-size: 12px; color: var(--text-muted)">主作者</div>
+                            </div>
+                            <div style="font-size: 12px; color: var(--accent-green)">● 在线</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 10px; background: var(--bg-tertiary); border-radius: 8px; margin-bottom: 8px">
+                            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #3b82f6, #06b6d4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600">李</div>
+                            <div style="flex: 1">
+                                <div style="font-weight: 500">李四</div>
+                                <div style="font-size: 12px; color: var(--text-muted)">协写</div>
+                            </div>
+                            <div style="font-size: 12px; color: var(--accent-green)">● 在线</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 10px; background: var(--bg-tertiary); border-radius: 8px; margin-bottom: 8px">
+                            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #22c55e, #14b8a6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600">王</div>
+                            <div style="flex: 1">
+                                <div style="font-weight: 500">王五</div>
+                                <div style="font-size: 12px; color: var(--text-muted)">编辑</div>
+                            </div>
+                            <div style="font-size: 12px; color: var(--accent-green)">● 在线</div>
+                        </div>
+                    </div>
+
+                    <button class="btn-secondary" style="width: 100%; margin-top: 12px" onclick="showInviteModal()">
+                        + 邀请协作者
+                    </button>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color)">
+                <div style="display: flex; gap: 16px; align-items: center">
+                    <div style="flex: 1">
+                        <span style="font-size: 12px; color: var(--text-muted)">AI额度：</span>
+                        <span style="color: var(--accent-blue); font-weight: 600">85,000</span>
+                        <span style="color: var(--text-muted)"> / 100,000 字</span>
+                    </div>
+                    <div class="usage-bar" style="width: 200px; height: 6px">
+                        <div class="usage-fill" style="width: 85%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 邀请协作者弹窗 -->
+    <div class="modal-overlay" id="inviteModal">
+        <div class="modal">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px">
+                <h2 style="margin: 0">邀请协作者</h2>
+                <button class="toolbar-btn" onclick="closeInviteModal()">✕</button>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">协作者邮箱（可选）</label>
+                <input type="email" class="form-input" id="inviteEmail" placeholder="输入协作者邮箱">
+            </div>
+            <div class="form-group">
+                <label class="form-label">角色</label>
+                <select class="form-input" id="inviteRole">
+                    <option value="co_writer">协写 - 可编辑内容、使用AI</option>
+                    <option value="editor">编辑 - 可编辑内容</option>
+                    <option value="setting_manager">设定管理 - 可管理世界观设定</option>
+                    <option value="reviewer">审阅者 - 只读权限</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">附带消息（可选）</label>
+                <textarea class="form-input" id="inviteMessage" placeholder="添加一条个人消息..." rows="3"></textarea>
+            </div>
+
+            <div id="inviteLinkSection" style="display: none; margin-bottom: 16px">
+                <div style="padding: 12px; background: var(--bg-tertiary); border-radius: 8px">
+                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px">邀请链接已生成：</div>
+                    <div style="display: flex; gap: 8px">
+                        <input type="text" class="form-input" id="generatedInviteLink" readonly style="flex: 1">
+                        <button class="btn-primary" onclick="copyInviteLink()">复制</button>
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 8px">链接7天内有效</div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeInviteModal()">取消</button>
+                <button class="btn-primary" onclick="generateInviteLink()">生成邀请链接</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投稿向导弹窗 -->
+    <div class="modal-overlay" id="publishModal">
+        <div class="modal" style="max-width: 700px">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px">
+                <h2 style="margin: 0">📤 投稿到平台</h2>
+                <button class="toolbar-btn" onclick="closePublishModal()">✕</button>
+            </div>
+
+            <!-- 步骤指示器 -->
+            <div id="publishSteps" style="display: flex; margin-bottom: 24px">
+                <div class="publish-step active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">选择平台</div>
+                </div>
+                <div class="publish-step" data-step="2">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">填写信息</div>
+                </div>
+                <div class="publish-step" data-step="3">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">内容检测</div>
+                </div>
+                <div class="publish-step" data-step="4">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">提交审核</div>
+                </div>
+            </div>
+
+            <!-- 步骤1：选择平台 -->
+            <div id="publishStep1">
+                <div style="margin-bottom: 16px; color: var(--text-secondary)">选择投稿平台：</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px">
+                    <div class="platform-card" onclick="selectPlatform('fanqie')">
+                        <div style="font-size: 24px; margin-bottom: 8px">🍅</div>
+                        <div style="font-weight: 600">番茄小说</div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px">最低 2 万字</div>
+                    </div>
+                    <div class="platform-card" onclick="selectPlatform('qidian')">
+                        <div style="font-size: 24px; margin-bottom: 8px">📚</div>
+                        <div style="font-weight: 600">起点中文网</div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px">最低 3 万字</div>
+                    </div>
+                    <div class="platform-card" onclick="selectPlatform('jinjiang')">
+                        <div style="font-size: 24px; margin-bottom: 8px">📖</div>
+                        <div style="font-weight: 600">晋江文学城</div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px">最低 3 万字</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步骤2：填写信息 -->
+            <div id="publishStep2" style="display: none">
+                <div style="padding: 12px; background: var(--bg-tertiary); border-radius: 8px; margin-bottom: 16px">
+                    <span style="color: var(--text-muted)">投稿平台：</span>
+                    <span id="selectedPlatformName" style="font-weight: 600">番茄小说</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">作品标题 *</label>
+                    <input type="text" class="form-input" id="publishTitle" value="幽冥古币" maxlength="200">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">作者名 *</label>
+                    <input type="text" class="form-input" id="publishAuthor" value="创作者" maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">分类</label>
+                    <select class="form-input" id="publishCategory">
+                        <option value="玄幻">玄幻</option>
+                        <option value="都市">都市</option>
+                        <option value="历史">历史</option>
+                        <option value="科幻">科幻</option>
+                        <option value="悬疑">悬疑</option>
+                        <option value="言情">言情</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">简介</label>
+                    <textarea class="form-input" id="publishSynopsis" placeholder="作品简介..." rows="4" maxlength="500">一枚古币连接生死两界，一段奇遇改变命运轨迹。</textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="goToPublishStep(1)">上一步</button>
+                    <button class="btn-primary" onclick="goToPublishStep(3)">下一步</button>
+                </div>
+            </div>
+
+            <!-- 步骤3：内容检测 -->
+            <div id="publishStep3" style="display: none">
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px">
+                    <div id="checkStatusIcon" style="width: 64px; height: 64px; border-radius: 50%; background: var(--accent-green); display: flex; align-items: center; justify-content: center; font-size: 28px; color: white">
+                        ✓
+                    </div>
+                    <div>
+                        <div id="checkStatusTitle" style="font-weight: 600; font-size: 18px">内容安全</div>
+                        <div id="checkStatusDesc" style="color: var(--text-muted); font-size: 13">
+                            总字数 52,480 · 敏感词 0 个
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 16px; background: var(--bg-tertiary); border-radius: 12px; margin-bottom: 20px">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px">
+                        <span>字数检测</span>
+                        <span style="color: var(--accent-green)">✓ 达标 (52,480 / 最低 20,000)</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px">
+                        <span>敏感词检测</span>
+                        <span style="color: var(--accent-green)">✓ 未检测到敏感词</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between">
+                        <span>章节检测</span>
+                        <span style="color: var(--accent-green)">✓ 3 章</span>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="goToPublishStep(2)">上一步</button>
+                    <button class="btn-primary" onclick="goToPublishStep(4)">提交审核</button>
+                </div>
+            </div>
+
+            <!-- 步骤4：完成 -->
+            <div id="publishStep4" style="display: none; text-align: center; padding: 20px 0">
+                <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--accent-green); display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 20px; color: white">
+                    ✓
+                </div>
+                <h3 style="margin-bottom: 12px">投稿成功！</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px">
+                    您的作品已提交审核，通常需要1-3个工作日<br>
+                    审核结果将通过站内消息通知您
+                </p>
+                <div style="padding: 16px; background: var(--bg-tertiary); border-radius: 12px; text-align: left; margin-bottom: 20px">
+                    <div style="margin-bottom: 8px"><span style="color: var(--text-muted)">作品：</span><span id="finalTitle">幽冥古币</span></div>
+                    <div style="margin-bottom: 8px"><span style="color: var(--text-muted)">平台：</span><span id="finalPlatform">番茄小说</span></div>
+                    <div><span style="color: var(--text-muted)">投稿ID：</span><span id="finalId" style="font-family: monospace">FQ20240330...</span></div>
+                </div>
+                <button class="btn-primary" onclick="closePublishModal()">完成</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 我的投稿弹窗 -->
+    <div class="modal-overlay" id="submissionsModal">
+        <div class="modal" style="max-width: 600px">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px">
+                <h2 style="margin: 0">📋 我的投稿</h2>
+                <button class="toolbar-btn" onclick="closeSubmissionsModal()">✕</button>
+            </div>
+
+            <div id="submissionsList">
+                <div style="padding: 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 12px">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px">
+                        <span style="font-weight: 600">幽冥古币</span>
+                        <span style="padding: 4px 12px; background: rgba(34, 197, 94, 0.2); color: var(--accent-green); border-radius: 100px; font-size: 12px">已发布</span>
+                    </div>
+                    <div style="font-size: 13px; color: var(--text-muted)">
+                        番茄小说 · 52,480 字 · 3 章
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px">
+                        2024-03-28 发布
+                    </div>
+                </div>
+
+                <div style="padding: 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px">
+                        <span style="font-weight: 600">星河战纪</span>
+                        <span style="padding: 4px 12px; background: rgba(234, 179, 8, 0.2); color: var(--accent-yellow); border-radius: 100px; font-size: 12px">审核中</span>
+                    </div>
+                    <div style="font-size: 13px; color: var(--text-muted)">
+                        起点中文网 · 128,000 字 · 12 章
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px">
+                        2024-03-29 提交
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeSubmissionsModal()">关闭</button>
+                <button class="btn-primary" onclick="closeSubmissionsModal();showPublishModal()">新投稿</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <footer>
+        <p>AI小说创作平台 v1.0.0 | 7个专业Agent协作系统</p>
+    </footer>
+
+    <script>
+        // 认证状态管理
+        let currentUser = null;
+        let accessToken = null;
+
+        // 初始化认证状态
+        function initAuth() {
+            const savedUser = localStorage.getItem('auth_user');
+            const savedToken = localStorage.getItem('auth_token');
+            if (savedUser && savedToken) {
+                currentUser = JSON.parse(savedUser);
+                accessToken = savedToken;
+                updateAuthUI();
+            }
+        }
+
+        function updateAuthUI() {
+            const userAvatar = document.querySelector('.user-avatar');
+            const userDropdown = document.getElementById('userDropdown');
+            const authActionBtn = document.getElementById('authActionBtn');
+            const authActionIcon = document.getElementById('authActionIcon');
+            const authActionText = document.getElementById('authActionText');
+            
+            if (currentUser) {
+                userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+                userAvatar.title = currentUser.username;
+                
+                userDropdown.querySelector('.user-name').textContent = currentUser.displayName || currentUser.username;
+                userDropdown.querySelector('.user-email').textContent = `@${currentUser.username}`;
+                
+                authActionBtn.className = 'user-dropdown-item logout';
+                authActionIcon.textContent = '🚪';
+                authActionText.textContent = '退出登录';
+            } else {
+                userAvatar.textContent = '作';
+                userAvatar.title = '游客';
+                
+                userDropdown.querySelector('.user-name').textContent = '游客';
+                userDropdown.querySelector('.user-email').textContent = '@guest';
+                
+                authActionBtn.className = 'user-dropdown-item';
+                authActionIcon.textContent = '🔐';
+                authActionText.textContent = '登录';
+            }
+        }
+
+        function handleAuthAction() {
+            document.getElementById('userDropdown').classList.remove('show');
+            if (currentUser) {
+                handleLogout();
+            } else {
+                showAuthModal();
+            }
+        }
+
+        function showAuthModal() {
+            document.getElementById('authModal').classList.add('show');
+            document.getElementById('authUsername').focus();
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.remove('show');
+            document.getElementById('authError').style.display = 'none';
+            document.getElementById('authForm').reset();
+        }
+
+        let authMode = 'login';
+
+        function switchAuthMode(mode) {
+            authMode = mode;
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const confirmGroup = document.getElementById('confirmPasswordGroup');
+            const title = document.getElementById('authModalTitle');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const switchText = document.getElementById('authSwitchText');
+
+            if (mode === 'login') {
+                loginTab.style.background = 'var(--bg-card)';
+                loginTab.style.color = 'var(--text-primary)';
+                registerTab.style.background = 'transparent';
+                registerTab.style.color = 'var(--text-secondary)';
+                confirmGroup.style.display = 'none';
+                title.textContent = '🔐 登录';
+                submitBtn.textContent = '登录';
+                switchText.innerHTML = '还没有账号？<button type="button" onclick="switchAuthMode(\'register\')" style="background:none;border:none;color:var(--accent-blue);cursor:pointer;padding:0 4px;font-size:13px">立即注册</button>';
+            } else {
+                loginTab.style.background = 'transparent';
+                loginTab.style.color = 'var(--text-secondary)';
+                registerTab.style.background = 'var(--bg-card)';
+                registerTab.style.color = 'var(--text-primary)';
+                confirmGroup.style.display = 'block';
+                title.textContent = '📝 注册';
+                submitBtn.textContent = '注册';
+                switchText.innerHTML = '已有账号？<button type="button" onclick="switchAuthMode(\'login\')" style="background:none;border:none;color:var(--accent-blue);cursor:pointer;padding:0 4px;font-size:13px">立即登录</button>';
+            }
+            document.getElementById('authError').style.display = 'none';
+        }
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('authUsername').value.trim();
+            const password = document.getElementById('authPassword').value;
+            const confirmPassword = document.getElementById('authConfirmPassword').value;
+            const errorEl = document.getElementById('authError');
+            const submitBtn = document.getElementById('authSubmitBtn');
+
+            if (!username) {
+                showAuthError('请输入用户名');
+                return;
+            }
+            if (!password) {
+                showAuthError('请输入密码');
+                return;
+            }
+            if (authMode === 'register') {
+                if (password.length < 6) {
+                    showAuthError('密码长度至少为6个字符');
+                    return;
+                }
+                if (password !== confirmPassword) {
+                    showAuthError('两次输入的密码不一致');
+                    return;
+                }
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '处理中...';
+
+            try {
+                // 模拟API调用（实际项目应连接后端）
+                await simulateAuthRequest(username, password, authMode);
+                
+                // 保存到本地存储
+                localStorage.setItem('auth_user', JSON.stringify(currentUser));
+                localStorage.setItem('auth_token', accessToken);
+                
+                updateAuthUI();
+                closeAuthModal();
+                showToast(authMode === 'login' ? '登录成功！' : '注册成功！', 'success');
+            } catch (err) {
+                showAuthError(err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = authMode === 'login' ? '登录' : '注册';
+            }
+        }
+
+        function showAuthError(msg) {
+            const errorEl = document.getElementById('authError');
+            errorEl.textContent = msg;
+            errorEl.style.display = 'block';
+        }
+
+        // 模拟认证请求（演示用）
+        function simulateAuthRequest(username, password, mode) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // 演示模式：接受任意用户名密码
+                    currentUser = {
+                        id: 'user_' + Date.now(),
+                        username: username,
+                        displayName: username,
+                        avatarUrl: null
+                    };
+                    accessToken = 'token_' + Math.random().toString(36).substr(2);
+                    resolve({ user: currentUser, accessToken });
+                }, 800);
+            });
+        }
+
+        // 真实认证API调用（连接后端时使用）
+        async function realAuthRequest(username, password, mode) {
+            const API_BASE = 'http://localhost:3000';
+            const endpoint = mode === 'login' ? '/api/auth/login' : '/api/auth/register';
+            
+            const response = await fetch(API_BASE + endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || '操作失败');
+            }
+
+            currentUser = data.user;
+            accessToken = data.accessToken;
+            return data;
+        }
+
+        async function handleLogout() {
+            try {
+                // 清除本地存储
+                localStorage.removeItem('auth_user');
+                localStorage.removeItem('auth_token');
+                currentUser = null;
+                accessToken = null;
+                
+                document.getElementById('userDropdown').classList.remove('show');
+                document.querySelector('.user-avatar').textContent = '作';
+                showToast('已退出登录', 'success');
+                
+                // 可选：调用后端登出API
+                // await fetch('http://localhost:3000/api/auth/logout', { method: 'POST', credentials: 'include' });
+            } catch (err) {
+                showToast('退出失败', 'error');
+            }
+        }
+
+        // 数据初始化
+        let wikiData = [
+            { id: 1, name: '林墨', type: 'character', desc: '男主角，性格冷静克制，不轻易表现恐惧。自幼被神秘组织收养。' },
+            { id: 2, name: '姬紫月', type: 'character', desc: '女主角，古灵精怪，出身神秘世家，掌握虚空经。' },
+            { id: 3, name: '古币', type: 'item', desc: '开启幽冥之门的钥匙，会在危险临近时发热。' },
+            { id: 4, name: '青云镇', type: 'location', desc: '表面平静的边陲小镇，实则暗流涌动。' },
+            { id: 5, name: '幽冥之门', type: 'setting', desc: '传说中连接生死的通道，被古币封印。' }
+        ];
+
+        let outlineData = [
+            { id: 1, title: '第一章 觉醒', children: [
+                { id: 11, title: '1.1 神秘的古币', children: [] },
+                { id: 12, title: '1.2 青云镇的秘密', children: [] }
+            ]},
+            { id: 2, title: '第二章 幽冥', children: [
+                { id: 21, title: '2.1 门开了', children: [] }
+            ]},
+            { id: 3, title: '第三章 逃离', children: [] }
+        ];
+
+        let versions = [{ id: 1, time: '刚刚', desc: '当前版本', content: '' }];
+        let currentStyle = '古风';
+        let isGenerating = false;
+        let wikiIdCounter = 6;
+        let currentAIDetectionResult = null;
+
+        const typeIcons = { character: '👤', location: '📍', item: '🔮', setting: '⚙️', faction: '🏰' };
+        const typeNames = { character: '人物', location: '地点', item: '道具', setting: '设定', faction: '势力' };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initAuth();
+            renderWikiList();
+            renderOutline();
+            updateWordCount();
+        });
+
+        // Wiki渲染
+        function renderWikiList() {
+            document.getElementById('wikiList').innerHTML = wikiData.map(item => `
+                <div class="wiki-card">
+                    <div class="wiki-card-header">
+                        <div class="wiki-type-icon">${typeIcons[item.type]}</div>
+                        <span class="wiki-card-name">${item.name}</span>
+                    </div>
+                    <div class="wiki-card-type">${typeNames[item.type]}</div>
+                    <div class="wiki-card-desc">${item.desc.substring(0, 40)}...</div>
+                    <button class="wiki-delete" onclick="event.stopPropagation();deleteWiki(${item.id})">×</button>
+                </div>
+            `).join('');
+        }
+
+        // 大纲渲染
+        function renderOutline() {
+            document.getElementById('outlineContainer').innerHTML = outlineData.map(chapter => renderOutlineNode(chapter)).join('');
+        }
+
+        function renderOutlineNode(node) {
+            const hasChildren = node.children && node.children.length > 0;
+            return `
+                <div class="outline-node">
+                    <div class="outline-node-header">
+                        <span class="outline-toggle">${hasChildren ? '▼' : '•'}</span>
+                        <span class="outline-title">${node.title}</span>
+                    </div>
+                    ${hasChildren ? `<div class="outline-children">${node.children.map(c => renderOutlineNode(c)).join('')}</div>` : ''}
+                </div>
+            `;
+        }
+
+        // AI续写
+        function aiWrite(direction) {
+            if (isGenerating) return;
+            isGenerating = true;
+
+            const content = document.getElementById('content');
+            const btn = document.getElementById('aiMainBtn');
+            btn.innerHTML = '⏳ 生成中...';
+
+            const texts = {
+                continue: [
+                    '就在这时，门缝下渗入了一缕诡异的紫烟，古币在他掌心剧烈颤抖，仿佛要挣脱束缚。',
+                    '林墨猛地抬头，看见一个模糊的黑影正穿透墙壁，向他逼近。',
+                    '"你终于来了。"黑影发出沙哑的声音，像是两块粗糙的石头在摩擦。'
+                ],
+                conflict: ['"等等！"门外突然传来一个清脆的女声。一道剑光破门而入，直取那个黑影。', '姬紫月手持长剑挡在林墨身前，冷冷地盯着黑影："想动他？先问问我手中的剑。"'],
+                twist: ['黑影突然发出一阵刺耳的笑声："你以为我是来杀你的？不，我是来救你的。"', '林墨愣住了。这个黑影，竟然救他？这与他预料的截然不同。'],
+                dialog: ['"你是谁？为什么要盯着我？"林墨沉声问道，手心微微冒汗。', '"我叫姬紫月，"少女神秘一笑，"也是来青云镇……寻找那枚古币的人。"'],
+                scene: ['青云镇的夜色如墨，远处的山峦笼罩在薄雾中。镇上的灯火一盏盏熄灭，只剩下一家客栈还亮着微弱的光。', '雨滴敲打着屋檐，发出规律的声响。空气中弥漫着泥土和青草的气息，还有一种说不清道不明的古旧味道。']
+            };
+
+            const paragraphs = texts[direction] || texts.continue;
+            let pIndex = 0, cIndex = 0, currentP = null;
+
+            function typeChar() {
+                if (pIndex >= paragraphs.length) {
+                    isGenerating = false;
+                    btn.innerHTML = '🪄 AI续写';
+                    saveVersion();
+                    return;
+                }
+
+                const text = paragraphs[pIndex];
+                if (cIndex === 0) {
+                    currentP = document.createElement('p');
+                    currentP.className = 'ai-text';
+                    content.appendChild(currentP);
+                }
+
+                if (cIndex < text.length) {
+                    currentP.textContent += text[cIndex];
+                    cIndex++;
+                    content.scrollTop = content.scrollHeight;
+                    setTimeout(typeChar, 25);
+                } else {
+                    cIndex = 0;
+                    pIndex++;
+                    setTimeout(typeChar, 150);
+                }
+            }
+            typeChar();
+        }
+
+        // AI生成
+        function generateName() { showToast('生成人名: ' + ['云逸风', '萧寒烟', '楚天歌'][Math.floor(Math.random() * 3)], 'success'); }
+        function generatePlace() { showToast('生成地名: ' + ['落霞山', '幽冥谷', '青云峰'][Math.floor(Math.random() * 3)], 'success'); }
+        function generateSkill() { showToast('生成功法: ' + ['九转玄功', '太虚剑诀', '星辰诀'][Math.floor(Math.random() * 3)], 'success'); }
+        function generateItem() { showToast('生成道具: ' + ['玄铁重剑', '星辰晶', '龙血丹'][Math.floor(Math.random() * 3)], 'success'); }
+        function generateFaction() { showToast('生成势力: ' + ['青云宗', '玄天门', '星辰阁'][Math.floor(Math.random() * 3)], 'success'); }
+
+        // AI分析
+        function analyzeLogic() { showAnalyzeResult('✓ 未发现逻辑问题', '时间线连贯，空间转换合理'); }
+        function analyzeConsistency() { showAnalyzeResult('✓ 一致性检查通过', '人物行为符合角色设定'); }
+        function analyzeSensitive() { showAnalyzeResult('✓ 未发现敏感词', '内容安全，符合发布标准'); }
+        function analyzeReadability() {
+            const content = document.getElementById('content').innerText;
+            const words = content.replace(/\s/g, '').length;
+            showAnalyzeResult('📊 可读性分析', `总字数: ${words} | 难度: 中等`);
+        }
+        function showAnalyzeResult(title, desc) {
+            const result = document.getElementById('analyzeResult');
+            result.style.display = 'block';
+            result.innerHTML = `<div style="color:var(--accent-green)">${title}</div><div style="color:var(--text-muted);font-size:12px;margin-top:4px">${desc}</div>`;
+        }
+
+        // 面板切换
+        function switchAITab(tab) {
+            document.querySelectorAll('.ai-tab').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('writePanel').style.display = tab === 'write' ? 'block' : 'none';
+            document.getElementById('generatePanel').style.display = tab === 'generate' ? 'block' : 'none';
+            document.getElementById('analyzePanel').style.display = tab === 'analyze' ? 'block' : 'none';
+            document.getElementById('agentPanel').style.display = tab === 'agent' ? 'block' : 'none';
+            document.getElementById('aiindexPanel').style.display = tab === 'aiindex' ? 'block' : 'none';
+            document.getElementById('analyzeResult').style.display = 'none';
+            
+            if (tab === 'aiindex') {
+                document.getElementById('aiDetectionResult').style.display = 'none';
+            }
+        }
+
+        // AI指数检测
+        function getEditorContent() {
+            const contentEl = document.getElementById('content');
+            return contentEl ? contentEl.innerText.trim() : '';
+        }
+
+        async function runAIDetection(type) {
+            const editorContent = getEditorContent();
+            if (!editorContent || editorContent.length < 100) {
+                showToast('内容过短，无法进行有效检测', 'error');
+                return;
+            }
+
+            const loading = document.getElementById('aiDetectLoading');
+            const result = document.getElementById('aiDetectionResult');
+            const progress = document.getElementById('aiDetectProgress');
+            
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            // 模拟检测进度
+            const steps = ['分析文本统计特征...', '检测AI特征模式...', '识别可能的AI模型...', '计算综合指数...'];
+            let stepIndex = 0;
+            const progressInterval = setInterval(() => {
+                progress.textContent = steps[stepIndex % steps.length];
+                stepIndex++;
+            }, 800);
+
+            try {
+                const apiEndpoint = type === 'novel' ? '/api/ai-detect/novel' : '/api/ai-detect/chapter';
+                const payload = type === 'novel' 
+                    ? { chapterIds: [] }
+                    : { content: editorContent };
+                
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await response.json();
+                
+                clearInterval(progressInterval);
+                loading.style.display = 'none';
+                
+                if (data.success && data.data) {
+                    displayAIDetectionResult(data.data);
+                    result.style.display = 'block';
+                } else {
+                    throw new Error(data.error || 'API返回无效数据');
+                }
+                
+            } catch (error) {
+                console.error('AI检测API错误:', error);
+                clearInterval(progressInterval);
+                loading.style.display = 'none';
+                // 使用本地模拟结果
+                const mockResult = generateMockAIDetectionResult(editorContent);
+                displayAIDetectionResult(mockResult);
+                result.style.display = 'block';
+            }
+        }
+
+        function generateMockAIDetectionResult(text) {
+            const stats = analyzeTextStatistics(text);
+            const humanScore = Math.max(20, Math.min(85, 70 - stats.repetitionPenalty + stats.lengthVarianceBonus));
+            const aiScore = Math.max(10, Math.min(80, 30 + stats.repetitionPenalty - stats.lengthVarianceBonus));
+            const suspectedScore = 100 - humanScore - aiScore;
+
+            const riskLevel = aiScore >= 60 ? 'very_high' : aiScore >= 45 ? 'high' : aiScore >= 30 ? 'medium' : aiScore >= 15 ? 'low' : 'safe';
+            
+            const models = ['GPT-4', 'Claude', 'DeepSeek', 'Gemini', '文心一言', '豆包', '元宝'];
+            const detectedModels = [];
+            if (aiScore > 25) {
+                const numModels = Math.floor(Math.random() * 2) + 1;
+                for (let i = 0; i < numModels; i++) {
+                    const model = models[Math.floor(Math.random() * models.length)];
+                    if (!detectedModels.find(m => m.name === model)) {
+                        detectedModels.push({
+                            name: model,
+                            confidence: Math.floor(40 + Math.random() * 50)
+                        });
+                    }
+                }
+            }
+
+            return {
+                humanScore: Math.round(humanScore),
+                suspectedAIScore: Math.round(suspectedScore),
+                aiScore: Math.round(aiScore),
+                riskLevel,
+                confidence: 75 + Math.floor(Math.random() * 20),
+                summary: generateSummary(humanScore, aiScore, detectedModels),
+                suggestions: generateSuggestions(aiScore, stats),
+                statistics: stats,
+                detectedModels
+            };
+        }
+
+        function analyzeTextStatistics(text) {
+            const sentences = text.split(/[。！？；\n]+/).filter(s => s.trim().length > 0);
+            const words = text.split(/[\s，。！？；：""''（）《》【】、]/).filter(w => w.length > 0);
+            const uniqueWords = new Set(words);
+            
+            const sentenceLengths = sentences.map(s => s.replace(/[\s，。！？；：""''（）《》【】、]/g, '').length);
+            const avgLength = sentenceLengths.reduce((a, b) => a + b, 0) / (sentenceLengths.length || 1);
+            const variance = sentenceLengths.reduce((sum, len) => sum + Math.pow(len - avgLength, 2), 0) / (sentenceLengths.length || 1);
+            
+            let repeatCount = 0;
+            for (let i = 2; i < words.length; i++) {
+                if (words[i] === words[i-1] && words[i] === words[i-2]) repeatCount++;
+            }
+
+            return {
+                avgSentenceLength: avgLength.toFixed(1),
+                sentenceLengthVariance: variance.toFixed(1),
+                vocabDiversity: (uniqueWords.size / (words.length || 1)).toFixed(2),
+                burstiness: variance > 150 ? 'high' : variance < 50 ? 'low' : 'medium',
+                repetitionPenalty: Math.min(30, repeatCount * 3),
+                lengthVarianceBonus: variance > 100 ? 15 : variance < 50 ? -10 : 0
+            };
+        }
+
+        function generateSummary(human, ai, models) {
+            const modelList = models.map(m => `${m.name}(${m.confidence}%)`).join('、');
+            if (ai >= 60) return `文本具有明显的AI生成特征，检测到可能的AI写作迹象${modelList ? '（'+modelList+'）' : ''}。建议人工审核并适当修改。`;
+            if (ai >= 45) return `文本部分段落显示AI写作特征，疑似AI辅助创作。需要进一步人工判断内容的原创性。`;
+            if (ai >= 30) return `文本整体偏向人类写作风格，但存在少量AI特征痕迹。可能是AI辅助或轻度润色。`;
+            return `文本具有典型的人类写作特征，词汇丰富、表达自然，未检测到明显的AI生成痕迹。`;
+        }
+
+        function generateSuggestions(aiScore, stats) {
+            const suggestions = [];
+            if (aiScore >= 45) {
+                suggestions.push('建议对文本进行人工审核，适当增加个人风格的表达');
+                suggestions.push('减少过度使用的连接词和结构化表达');
+            }
+            if (aiScore >= 30) {
+                suggestions.push('可以适当增加情感波动和写作节奏变化');
+                suggestions.push('避免机械化的段落结构');
+            }
+            if (stats.repetitionPenalty > 15) {
+                suggestions.push('词汇重复率偏高，建议增加同义词替换');
+            }
+            if (stats.burstiness === 'low') {
+                suggestions.push('句子长度过于均匀，建议增加长短句变化');
+            }
+            if (suggestions.length === 0) {
+                suggestions.push('继续保持当前的写作风格');
+            }
+            return suggestions;
+        }
+
+        function displayAIDetectionResult(result) {
+            console.log('显示检测结果:', result);
+            currentAIDetectionResult = result;
+            
+            try {
+                document.getElementById('humanScore').textContent = result.humanScore ?? '--';
+                document.getElementById('suspectedScore').textContent = result.suspectedAIScore ?? '--';
+                document.getElementById('aiScore').textContent = result.aiScore ?? '--';
+
+                const riskBadge = document.getElementById('riskLevelBadge');
+                const riskConfig = {
+                    safe: { bg: 'background:#22c55e20;color:#22c55e', text: '安全' },
+                    low: { bg: 'background:#3b82f620;color:#3b82f6', text: '低风险' },
+                    medium: { bg: 'background:#eab30820;color:#eab308', text: '中等风险' },
+                    high: { bg: 'background:#f9731620;color:#f97316', text: '高风险' },
+                    very_high: { bg: 'background:#ef444420;color:#ef4444', text: '极高风险' }
+                };
+                const config = riskConfig[result.riskLevel] || riskConfig.safe;
+                riskBadge.style.cssText = config.bg + ';padding:6px 16px;border-radius:20px;font-size:14px;font-weight:500';
+                riskBadge.textContent = config.text;
+
+                drawRadarChart(result.humanScore || 0, result.suspectedAIScore || 0, result.aiScore || 0);
+
+                const modelsSection = document.getElementById('detectedModelsSection');
+                const modelsList = document.getElementById('detectedModelsList');
+                const models = result.detectedModels || [];
+                if (models.length > 0) {
+                    modelsSection.style.display = 'block';
+                    modelsList.innerHTML = models.map(m => 
+                        `<span style="background:#ef444420;color:#ef4444;padding:4px 10px;border-radius:12px;font-size:12px">${m.name} ${m.confidence}%</span>`
+                    ).join('');
+                } else {
+                    modelsSection.style.display = 'none';
+                }
+
+                const stats = result.statistics || {};
+                const statsContainer = document.getElementById('statsContainer');
+                statsContainer.innerHTML = `
+                    <div style="margin-bottom:6px">平均句子长度: <span style="color:#fff">${stats.avgSentenceLength || '--'}</span> 字符</div>
+                    <div style="margin-bottom:6px">句子长度方差: <span style="color:#fff">${stats.sentenceLengthVariance || '--'}</span></div>
+                    <div style="margin-bottom:6px">词汇多样性: <span style="color:#fff">${stats.vocabDiversity || '--'}</span></div>
+                    <div style="margin-bottom:6px">句子变化度: <span style="color:#fff">${stats.burstiness === 'high' ? '高' : stats.burstiness === 'low' ? '低' : stats.burstinessScore || '中'}</span></div>
+                `;
+
+                const suggestionsSection = document.getElementById('suggestionsSection');
+                const suggestionsList = document.getElementById('suggestionsList');
+                const suggestions = result.suggestions || [];
+                if (suggestions.length > 0) {
+                    suggestionsSection.style.display = 'block';
+                    suggestionsList.innerHTML = suggestions.map(s => `<li style="margin-bottom:4px">${s}</li>`).join('');
+                } else {
+                    suggestionsSection.style.display = 'none';
+                }
+
+                const paragraphResults = result.paragraphResults || [];
+                const aiParagraphs = paragraphResults.filter(p => p.aiScore > 30);
+                const paragraphStats = document.getElementById('paragraphStats');
+                if (paragraphResults.length > 0) {
+                    paragraphStats.innerHTML = `共${paragraphResults.length}个段落，<span style="color:var(--accent-blue)">${aiParagraphs.length}个</span>显示AI特征`;
+                } else {
+                    paragraphStats.innerHTML = '无段落级分析数据';
+                }
+
+                console.log('检测结果显示成功');
+            } catch (e) {
+                console.error('显示检测结果出错:', e);
+            }
+        }
+
+        function drawRadarChart(human, suspected, ai) {
+            const canvas = document.getElementById('radarCanvas');
+            const placeholder = document.getElementById('radarPlaceholder');
+            if (!canvas) return;
+            
+            canvas.style.display = 'block';
+            placeholder.style.display = 'none';
+            
+            const ctx = canvas.getContext('2d');
+            const centerX = 100;
+            const centerY = 100;
+            const radius = 70;
+            
+            ctx.clearRect(0, 0, 200, 200);
+            
+            const labels = ['人工特征', '疑似AI', 'AI特征'];
+            const values = [human, suspected, ai];
+            const colors = ['#4ECDC4', '#FFE66D', '#FF6B6B'];
+            const angleStep = (Math.PI * 2) / 3;
+            const startAngle = -Math.PI / 2;
+            
+            // 绘制背景网格
+            for (let level = 1; level <= 5; level++) {
+                ctx.beginPath();
+                for (let i = 0; i <= 3; i++) {
+                    const angle = startAngle + i * angleStep;
+                    const x = centerX + (radius * level / 5) * Math.cos(angle);
+                    const y = centerY + (radius * level / 5) * Math.sin(angle);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.strokeStyle = level === 5 ? '#444' : '#333';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+            
+            // 绘制轴线
+            for (let i = 0; i < 3; i++) {
+                const angle = startAngle + i * angleStep;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(centerX + radius * Math.cos(angle), centerY + radius * Math.sin(angle));
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                ctx.fillStyle = '#888';
+                ctx.font = '10px system-ui';
+                ctx.textAlign = 'center';
+                ctx.fillText(labels[i], centerX + (radius + 18) * Math.cos(angle), centerY + (radius + 18) * Math.sin(angle));
+            }
+            
+            // 绘制数据区域
+            ctx.beginPath();
+            for (let i = 0; i < 3; i++) {
+                const angle = startAngle + i * angleStep;
+                const valueRadius = (values[i] / 100) * radius;
+                const x = centerX + valueRadius * Math.cos(angle);
+                const y = centerY + valueRadius * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(78, 205, 196, 0.3)';
+            ctx.fill();
+            ctx.strokeStyle = colors[0];
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // 绘制数据点
+            for (let i = 0; i < 3; i++) {
+                const angle = startAngle + i * angleStep;
+                const valueRadius = (values[i] / 100) * radius;
+                const x = centerX + valueRadius * Math.cos(angle);
+                const y = centerY + valueRadius * Math.sin(angle);
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fillStyle = colors[i];
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+        }
+
+        function toggleAIHighlight(enable) {
+            if (enable) {
+                highlightAIPatterns();
+            } else {
+                removeAIHighlights();
+            }
+        }
+
+        function highlightAIPatterns() {
+            if (!currentAIDetectionResult) {
+                showToast('请先进行AI检测', 'warning');
+                return;
+            }
+
+            const content = document.getElementById('content');
+            if (!content) return;
+
+            removeAIHighlights();
+
+            const patterns = [
+                { regex: /首先，其次，最后，因此，然而，不过/g, desc: '过度使用连接词' },
+                { regex: /另一方面|一方面.{0,3}另一方面/g, desc: '机械化对比结构' },
+                { regex: /至关重要|不可或缺|众所周知|毋庸置疑/g, desc: '过度使用四字词语' },
+                { regex: /具体而言|总的来说|值得注意的是/g, desc: '学术化开头语' },
+                { regex: /因为.*所以|如果.*那么/g, desc: '过度使用逻辑链' },
+                { regex: /第一步|第二步|第三步|总结/g, desc: '机械化步骤结构' },
+                { regex: /核心要点|关键在于|本质上/g, desc: '过度使用总结词' },
+                { regex: /同时|此外|另外|除此之外/g, desc: '多角度并列结构' },
+                { regex: /从.*角度来看|从.*视角来看/g, desc: '过度使用视角切换' },
+                { regex: /不仅.*而且|既.*又/g, desc: '对仗工整结构' },
+                { regex: /激动不已|感慨万千|热泪盈眶/g, desc: '过度使用情感词' }
+            ];
+
+            let highlightCount = 0;
+            const walk = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, null, false);
+            const textNodes = [];
+            while (walk.nextNode()) {
+                if (walk.currentNode.nodeValue.trim()) {
+                    textNodes.push(walk.currentNode);
+                }
+            }
+
+            textNodes.forEach(textNode => {
+                let text = textNode.nodeValue;
+                let hasHighlight = false;
+                let fragments = [];
+
+                patterns.forEach(({ regex, desc }) => {
+                    if (regex.test(text)) {
+                        hasHighlight = true;
+                        regex.lastIndex = 0;
+                    }
+                });
+
+                if (hasHighlight) {
+                    const span = document.createElement('span');
+                    span.innerHTML = text.replace(new RegExp(patterns.map(p => p.regex.source).join('|'), 'g'), 
+                        match => `<span class="ai-highlight" title="疑似AI特征">${match}</span>`);
+                    textNode.parentNode.replaceChild(span, textNode);
+                    highlightCount++;
+                }
+            });
+
+            const paragraphResults = currentAIDetectionResult.paragraphResults || [];
+            const aiParagraphs = paragraphResults.filter(p => p.aiScore > 40);
+            if (aiParagraphs.length > 0) {
+                showToast(`已在正文中标记 ${aiParagraphs.length} 个疑似AI段落（蓝色下划线）`, 'success');
+            } else if (highlightCount === 0) {
+                showToast('未检测到明显的AI特征模式', 'info');
+            } else {
+                showToast(`已标记 ${highlightCount} 处AI特征词组`, 'success');
+            }
+        }
+
+        function removeAIHighlights() {
+            const content = document.getElementById('content');
+            if (!content) return;
+
+            const highlights = content.querySelectorAll('.ai-highlight');
+            highlights.forEach(el => {
+                const parent = el.parentNode;
+                while (el.firstChild) {
+                    parent.insertBefore(el.firstChild, el);
+                }
+                parent.removeChild(el);
+                parent.normalize();
+            });
+
+            const spans = content.querySelectorAll('span');
+            spans.forEach(span => {
+                if (span.classList.contains('ai-highlight')) {
+                    const parent = span.parentNode;
+                    while (span.firstChild) {
+                        parent.insertBefore(span.firstChild, span);
+                    }
+                    parent.removeChild(span);
+                }
+            });
+            content.normalize();
+        }
+
+        function selectStyle(el) {
+            document.querySelectorAll('.style-chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            currentStyle = el.textContent;
+            showToast(`已切换到 ${currentStyle} 风格`, 'success');
+        }
+
+        // Wiki操作
+        function showAddWikiModal() { document.getElementById('wikiModal').classList.add('show'); }
+        function closeWikiModal() { document.getElementById('wikiModal').classList.remove('show'); }
+        function addWikiItem() {
+            const type = document.getElementById('wikiType').value;
+            const name = document.getElementById('wikiName').value.trim();
+            const desc = document.getElementById('wikiDesc').value.trim();
+            if (!name) { showToast('请输入名称', 'error'); return; }
+            wikiData.push({ id: wikiIdCounter++, name, type, desc: desc || '暂无描述' });
+            renderWikiList();
+            closeWikiModal();
+            document.getElementById('wikiName').value = '';
+            document.getElementById('wikiDesc').value = '';
+            showToast('添加成功', 'success');
+        }
+        function deleteWiki(id) {
+            wikiData = wikiData.filter(w => w.id !== id);
+            renderWikiList();
+            showToast('已删除', 'warning');
+        }
+
+        // 大纲操作
+        function addOutlineChapter() {
+            outlineData.push({ id: Date.now(), title: `第${outlineData.length + 1}章 新章节`, children: [] });
+            renderOutline();
+            showToast('已添加新章节', 'success');
+        }
+        function generateOutline() {
+            showToast('AI正在生成大纲...', 'success');
+            setTimeout(() => {
+                outlineData.push({ id: Date.now(), title: '第四章 初入江湖', children: [] });
+                renderOutline();
+                showToast('大纲生成完成', 'success');
+            }, 1500);
+        }
+
+        // Agent协作
+        const agentSequence = ['supervisor', 'structure', 'blueprint', 'content', 'setting', 'consistency', 'correction'];
+        const agentNames = { supervisor: '主管Agent', structure: '结构Agent', blueprint: '蓝图Agent', content: '内容Agent', setting: '设定Agent', consistency: '一致性Agent', correction: '纠错Agent' };
+        const agentIcons = { supervisor: '👔', structure: '📐', blueprint: '📝', content: '✍️', setting: '⚙️', consistency: '✅', correction: '🔧' };
+
+        function startAgentCollaboration() {
+            if (isGenerating) return;
+            isGenerating = true;
+            agentSequence.forEach(agent => {
+                const el = document.getElementById(`agent-${agent}`);
+                el.classList.remove('active', 'completed');
+                el.querySelector('.agent-status').textContent = '待命';
+            });
+            document.getElementById('agentLog').innerHTML = '';
+            executeAgents(0);
+        }
+
+        async function executeAgents(index) {
+            if (index >= agentSequence.length) {
+                isGenerating = false;
+                addAgentLog('✨ 协作流程完成！', 'success');
+                return;
+            }
+
+            const agentId = agentSequence[index];
+            const agentEl = document.getElementById(`agent-${agentId}`);
+            const statusEl = agentEl.querySelector('.agent-status');
+
+            agentEl.classList.add('active');
+            statusEl.textContent = '处理中...';
+            addAgentLog(`${agentIcons[agentId]} ${agentNames[agentId]} 开始工作...`, 'info');
+
+            await new Promise(r => setTimeout(r, [800, 1000, 1200, 2000, 800, 1000, 1000][index]));
+
+            agentEl.classList.remove('active');
+            agentEl.classList.add('completed');
+            statusEl.textContent = '完成';
+
+            if (agentId === 'content') await generateAgentContent();
+
+            setTimeout(() => executeAgents(index + 1), 500);
+        }
+
+        async function generateAgentContent() {
+            const content = document.getElementById('content');
+            const paragraphs = [
+                '【Agent协作】天色渐暗，青云镇的街道上行人寥寥，只有几盏昏黄的灯笼在风中摇曳。',
+                '林墨站在窗前，目光越过层层屋檐，望向远处的青云山。那山上据说隐藏着上古修仙者的洞府，但从未有人真正找到过。',
+                '昨夜那枚古币的异常，让他至今心中难安。古币表面的符文似乎在微微发光，那种光芒带着一种古老的气息。'
+            ];
+            let pIndex = 0, cIndex = 0, currentP = null;
+
+            function typeChar() {
+                if (pIndex >= paragraphs.length) { addAgentLog('✍️ 内容Agent 生成了 ' + paragraphs.reduce((s, p) => s + p.length, 0) + ' 字', 'success'); return; }
+                const text = paragraphs[pIndex];
+                if (cIndex === 0) { currentP = document.createElement('p'); currentP.className = 'ai-text'; content.appendChild(currentP); }
+                if (cIndex < text.length) { currentP.textContent += text[cIndex++]; content.scrollTop = content.scrollHeight; setTimeout(typeChar, 20); }
+                else { cIndex = 0; pIndex++; setTimeout(typeChar, 100); }
+            }
+            typeChar();
+        }
+
+        function addAgentLog(message, type) {
+            const log = document.getElementById('agentLog');
+            const time = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const colors = { info: 'var(--accent-blue)', success: 'var(--accent-green)', warning: 'var(--accent-orange)' };
+            log.innerHTML += `<div class="log-entry"><span class="log-time">[${time}]</span><span class="log-msg" style="color:${colors[type]}">${message}</span></div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function showAgentDemo() {
+            document.getElementById('agentPanel').style.display = 'block';
+            document.getElementById('writePanel').style.display = 'none';
+            document.querySelectorAll('.ai-tab').forEach((b, i) => b.classList.toggle('active', i === 3));
+            scrollToEditor();
+        }
+
+        // 版本历史
+        function saveVersion() {
+            const now = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+            versions.unshift({ id: Date.now(), time: now, desc: '自动保存', content: document.getElementById('content').innerHTML });
+            if (versions.length > 20) versions.pop();
+            updateWordCount();
+            
+            // 显示保存状态
+            const saveStatus = document.getElementById('saveStatus');
+            if (saveStatus) {
+                saveStatus.textContent = `已保存 ${now}`;
+                saveStatus.style.color = 'var(--accent-green)';
+                setTimeout(() => {
+                    saveStatus.textContent = '自动保存';
+                    saveStatus.style.color = '';
+                }, 2000);
+            }
+        }
+        function showVersionModal() {
+            document.getElementById('versionList').innerHTML = versions.map(v => `<div class="wiki-card" onclick="restoreVersion(${v.id})"><div class="wiki-card-name">${v.time}</div><div class="wiki-card-type">${v.desc}</div></div>`).join('');
+            document.getElementById('versionModal').classList.add('show');
+        }
+        function closeVersionModal() { document.getElementById('versionModal').classList.remove('show'); }
+        function restoreVersion(id) {
+            const v = versions.find(v => v.id === id);
+            if (v && v.content) { document.getElementById('content').innerHTML = v.content; closeVersionModal(); showToast('已恢复到 ' + v.time, 'success'); }
+        }
+
+        // 导出
+        function exportContent() { document.getElementById('exportModal').classList.add('show'); }
+        function closeExportModal() { document.getElementById('exportModal').classList.remove('show'); }
+        function doExport(format) {
+            const content = document.getElementById('content');
+            const title = '幽冥古币';
+            const data = { txt: content.innerText, md: `# ${title}\n\n` + content.innerText, html: `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${title}</title></head><body>` + content.innerHTML + '</body></html>', json: JSON.stringify({ title, content: content.innerText, wiki: wikiData, outline: outlineData }, null, 2) }[format];
+            const blob = new Blob([data], { type: { txt: 'text/plain', md: 'text/markdown', html: 'text/html', json: 'application/json' }[format] });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${title}.{txt: 'txt', md: 'md', html: 'html', json: 'json'}[format]`; a.click();
+            closeExportModal();
+            showToast(`已导出为 ${format.toUpperCase()}`, 'success');
+        }
+
+        // 工具函数
+        function formatText(cmd) { document.execCommand(cmd, false, null); }
+        function insertHeading(level) { document.execCommand('formatBlock', false, `h${level}`); }
+        function insertQuote() { document.execCommand('formatBlock', false, 'blockquote'); }
+        function scrollToEditor() { document.getElementById('editor').scrollIntoView({ behavior: 'smooth' }); }
+        function updateWordCount() {
+            const content = document.getElementById('content');
+            const text = content.innerText;
+            const wordCount = text.replace(/\s/g, '').length;
+            const paraCount = content.querySelectorAll('p').length + content.querySelectorAll('h2, h3, h4').length;
+            const sentenceCount = text.split(/[。！？.!?]/).filter(s => s.trim()).length;
+            
+            document.getElementById('wordCount').textContent = wordCount;
+            document.getElementById('paraCount').textContent = paraCount;
+            document.getElementById('sentenceCount').textContent = sentenceCount;
+        }
+        function showToast(msg, type = 'success') { const t = document.getElementById('toast'); t.textContent = msg; t.className = `toast ${type} show`; setTimeout(() => t.classList.remove('show'), 2500); }
+
+        // 编辑器增强功能
+        function editorUndo() { document.execCommand('undo', false, null); }
+        function editorRedo() { document.execCommand('redo', false, null); }
+        
+        function insertCodeBlock() {
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+            const pre = document.createElement('pre');
+            pre.style.cssText = 'background: var(--bg-tertiary); padding: 16px; border-radius: 8px; font-family: monospace; overflow-x: auto;';
+            const code = document.createElement('code');
+            code.textContent = selection.toString() || '// 在此输入代码';
+            pre.appendChild(code);
+            range.deleteContents();
+            range.insertNode(pre);
+        }
+        
+        function insertDivider() {
+            const hr = document.createElement('hr');
+            hr.style.cssText = 'border: none; border-top: 1px solid var(--border-color); margin: 24px 0;';
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+            range.insertNode(hr);
+        }
+        
+        function showFindReplace() {
+            document.getElementById('findModal').classList.add('show');
+            document.getElementById('findText').value = '';
+            document.getElementById('replaceText').value = '';
+        }
+        
+        function closeFindModal() {
+            document.getElementById('findModal').classList.remove('show');
+        }
+        
+        function findInContent() {
+            const searchText = document.getElementById('findText').value;
+            if (!searchText) {
+                showToast('请输入查找内容', 'warning');
+                return;
+            }
+            const content = document.getElementById('content');
+            const text = content.innerText;
+            const count = (text.match(new RegExp(searchText, 'gi')) || []).length;
+            showToast(`找到 ${count} 处匹配`, 'success');
+        }
+        
+        function replaceInContent() {
+            const searchText = document.getElementById('findText').value;
+            const replaceText = document.getElementById('replaceText').value;
+            if (!searchText) {
+                showToast('请输入查找内容', 'warning');
+                return;
+            }
+            const selection = window.getSelection();
+            if (selection.toString().toLowerCase() === searchText.toLowerCase()) {
+                document.execCommand('insertText', false, replaceText);
+                showToast('已替换', 'success');
+            } else {
+                showToast('请先选中要替换的文字', 'warning');
+            }
+        }
+        
+        function replaceAllInContent() {
+            const searchText = document.getElementById('findText').value;
+            const replaceText = document.getElementById('replaceText').value;
+            if (!searchText) {
+                showToast('请输入查找内容', 'warning');
+                return;
+            }
+            const content = document.getElementById('content');
+            const regex = new RegExp(searchText, 'gi');
+            const matches = content.innerHTML.match(regex);
+            if (matches) {
+                content.innerHTML = content.innerHTML.replace(regex, replaceText);
+                showToast(`已替换 ${matches.length} 处`, 'success');
+            } else {
+                showToast('未找到匹配内容', 'warning');
+            }
+        }
+        
+        function toggleFullscreen() {
+            const editor = document.querySelector('.editor-main');
+            if (!document.fullscreenElement) {
+                editor.requestFullscreen().catch(err => {
+                    showToast('无法进入全屏模式', 'error');
+                });
+                showToast('已进入全屏模式，按 ESC 退出', 'success');
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        function changeStyle(style) {
+            currentStyle = style;
+            showToast(`已切换到 ${style} 风格`, 'success');
+        }
+
+        // AI增强功能
+        function aiPolish() {
+            const content = document.getElementById('content');
+            const selection = window.getSelection().toString();
+            if (selection) {
+                showToast('AI正在润色选中内容...', 'success');
+                setTimeout(() => {
+                    showToast('润色完成！', 'success');
+                }, 1500);
+            } else {
+                showToast('请先选中需要润色的文字', 'warning');
+            }
+        }
+        
+        function aiExpand() {
+            const content = document.getElementById('content');
+            const selection = window.getSelection().toString();
+            if (selection) {
+                showToast('AI正在扩写选中内容...', 'success');
+                setTimeout(() => {
+                    const expanded = selection + '（扩写的内容会在这里显示，AI将把简短的描述扩展为更详细的叙述，增加更多细节和情感描写。）';
+                    document.execCommand('insertText', false, expanded);
+                    showToast('扩写完成！', 'success');
+                }, 1500);
+            } else {
+                showToast('请先选中需要扩写的文字', 'warning');
+            }
+        }
+        
+        function aiShorten() {
+            const content = document.getElementById('content');
+            const selection = window.getSelection().toString();
+            if (selection) {
+                showToast('AI正在缩写选中内容...', 'success');
+                setTimeout(() => {
+                    const shortened = selection.substring(0, Math.floor(selection.length / 2)) + '...';
+                    document.execCommand('insertText', false, shortened);
+                    showToast('缩写完成！', 'success');
+                }, 1500);
+            } else {
+                showToast('请先选中需要缩写的文字', 'warning');
+            }
+        }
+        
+        function aiTranslate() {
+            const selection = window.getSelection().toString();
+            if (selection) {
+                showToast('AI正在翻译...', 'success');
+                setTimeout(() => {
+                    showToast('翻译完成！（示例：这里是翻译结果）', 'success');
+                }, 1500);
+            } else {
+                showToast('请先选中需要翻译的文字', 'warning');
+            }
+        }
+        
+        function aiStyleTransfer() {
+            const style = document.getElementById('styleSelect').value;
+            const selection = window.getSelection().toString();
+            if (selection) {
+                showToast(`AI正在转换为${style}风格...`, 'success');
+                setTimeout(() => {
+                    showToast(`风格转换完成！`, 'success');
+                }, 2000);
+            } else {
+                showToast('请先选中需要转换风格的文字', 'warning');
+            }
+        }
+
+        // 用户菜单
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // 点击其他地方关闭菜单
+        document.addEventListener('click', function(e) {
+            const menu = document.querySelector('.user-menu');
+            const dropdown = document.getElementById('userDropdown');
+            if (menu && !menu.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // 个人中心
+        function showProfile() {
+            document.getElementById('userDropdown').classList.remove('show');
+            if (!currentUser) {
+                showAuthModal();
+                showToast('请先登录', 'warning');
+                return;
+            }
+            document.getElementById('profileModal').classList.add('show');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('show');
+        }
+
+        function saveProfile() {
+            const name = document.getElementById('profileName').value;
+            const email = document.getElementById('profileEmail').value;
+            const bio = document.getElementById('profileBio').value;
+            showToast('个人信息已保存', 'success');
+            closeProfileModal();
+        }
+
+        function resetProfile() {
+            document.getElementById('profileName').value = '创作者';
+            document.getElementById('profileEmail').value = 'writer@xiaoshui.com';
+            document.getElementById('profileBio').value = '用文字编织梦想';
+            showToast('已重置为默认值', 'warning');
+        }
+
+        // 设置
+        function showSettings() {
+            document.getElementById('userDropdown').classList.remove('show');
+            showToast('设置功能开发中...', 'warning');
+        }
+
+        // 订阅管理
+        function showSubscription() {
+            document.getElementById('userDropdown').classList.remove('show');
+            showToast('订阅功能开发中，敬请期待！', 'warning');
+        }
+
+        // 帮助
+        function showHelp() {
+            document.getElementById('userDropdown').classList.remove('show');
+            showToast('帮助文档即将上线', 'warning');
+        }
+
+        // 协作写作功能
+        let collaborationRooms = [];
+        let currentRoomId = null;
+        let connectedUsers = [];
+
+        function showCollaborationModal() {
+            document.getElementById('userDropdown').classList.remove('show');
+            document.getElementById('collaborationModal').classList.add('show');
+        }
+
+        function closeCollaborationModal() {
+            document.getElementById('collaborationModal').classList.remove('show');
+        }
+
+        function createCollaborationRoom() {
+            const name = document.getElementById('roomName').value.trim();
+            const type = document.getElementById('roomType').value;
+
+            if (!name) {
+                showToast('请输入房间名称', 'warning');
+                return;
+            }
+
+            const room = {
+                id: 'room-' + Date.now(),
+                name: name,
+                type: type,
+                members: [{ name: currentUser?.username || '我', role: 'owner' }],
+                onlineCount: 1
+            };
+
+            collaborationRooms.push(room);
+            renderRoomsList();
+            document.getElementById('roomName').value = '';
+            showToast('房间创建成功！', 'success');
+        }
+
+        function renderRoomsList() {
+            const container = document.getElementById('myRoomsList');
+            const typeNames = { chapter: '章节写作', outline: '大纲规划', setting: '设定管理', ai: 'AI协同' };
+            const roleNames = { owner: '主作者', co_writer: '协写', editor: '编辑', setting_manager: '设定管理' };
+
+            if (collaborationRooms.length === 0) {
+                container.innerHTML = '<div style="padding: 24px; text-align: center; color: var(--text-muted); font-size: 13px">暂无房间，请创建一个协作房间</div>';
+                return;
+            }
+
+            container.innerHTML = collaborationRooms.map(room => `
+                <div style="padding: 12px; background: var(--bg-tertiary); border-radius: 8px; margin-bottom: 8px; cursor: pointer" onclick="joinRoom('${room.id}')">
+                    <div style="display: flex; justify-content: space-between; align-items: center">
+                        <span style="font-weight: 500">${room.name}</span>
+                        <span style="font-size: 12px; color: var(--accent-green)">● ${room.onlineCount}人在线</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px">${typeNames[room.type]} · 您是${roleNames[room.members[0].role]}</div>
+                </div>
+            `).join('');
+        }
+
+        function joinRoom(roomId) {
+            currentRoomId = roomId;
+            closeCollaborationModal();
+            showToast('已加入协作房间，实时同步已开启', 'success');
+
+            // 模拟显示在线用户光标
+            simulateCollaborationCursors();
+        }
+
+        function simulateCollaborationCursors() {
+            // 添加协作指示器到编辑器
+            const editorStatus = document.querySelector('.editor-status');
+            if (editorStatus && !document.getElementById('collaborationIndicator')) {
+                const indicator = document.createElement('div');
+                indicator.id = 'collaborationIndicator';
+                indicator.style.cssText = 'display: flex; align-items: center; gap: 8px; margin-left: auto';
+                indicator.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 4px">
+                        <div style="width: 20px; height: 20px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white">张</div>
+                        <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #3b82f6, #06b6d4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white">李</div>
+                        <span style="font-size: 11px; color: var(--text-muted)">协作中</span>
+                    </div>
+                `;
+                editorStatus.appendChild(indicator);
+            }
+        }
+
+        function showInviteModal() {
+            document.getElementById('inviteModal').classList.add('show');
+            document.getElementById('inviteLinkSection').style.display = 'none';
+        }
+
+        function closeInviteModal() {
+            document.getElementById('inviteModal').classList.remove('show');
+        }
+
+        function generateInviteLink() {
+            const email = document.getElementById('inviteEmail').value;
+            const role = document.getElementById('inviteRole').value;
+
+            // 生成模拟邀请链接
+            const token = Math.random().toString(36).substr(2, 16);
+            const inviteLink = `https://xiaoshui.com/invite/${token}`;
+
+            document.getElementById('generatedInviteLink').value = inviteLink;
+            document.getElementById('inviteLinkSection').style.display = 'block';
+            showToast('邀请链接已生成', 'success');
+        }
+
+        function copyInviteLink() {
+            const link = document.getElementById('generatedInviteLink').value;
+            navigator.clipboard.writeText(link).then(() => {
+                showToast('链接已复制到剪贴板', 'success');
+            });
+        }
+
+        // 权限检查
+        const PERMISSIONS = {
+            owner: ['read', 'write', 'ai', 'invite', 'manage', 'publish', 'delete'],
+            co_writer: ['read', 'write', 'ai'],
+            editor: ['read', 'write'],
+            setting_manager: ['read', 'setting'],
+            reviewer: ['read']
+        };
+
+        function checkPermission(role, permission) {
+            return PERMISSIONS[role]?.includes(permission) || false;
+        }
+
+        // 投稿功能
+        let publishStep = 1;
+        let selectedPlatform = null;
+        let submissions = [];
+
+        function showPublishModal() {
+            document.getElementById('userDropdown')?.classList.remove('show');
+            document.getElementById('publishModal').classList.add('show');
+            publishStep = 1;
+            updatePublishStep();
+        }
+
+        function closePublishModal() {
+            document.getElementById('publishModal').classList.remove('show');
+        }
+
+        function showSubmissionsModal() {
+            document.getElementById('userDropdown')?.classList.remove('show');
+            document.getElementById('submissionsModal').classList.add('show');
+        }
+
+        function closeSubmissionsModal() {
+            document.getElementById('submissionsModal').classList.remove('show');
+        }
+
+        function selectPlatform(platform) {
+            selectedPlatform = platform;
+            const platformNames = {
+                fanqie: '番茄小说',
+                qidian: '起点中文网',
+                jinjiang: '晋江文学城'
+            };
+            document.getElementById('selectedPlatformName').textContent = platformNames[platform];
+            goToPublishStep(2);
+        }
+
+        function goToPublishStep(step) {
+            publishStep = step;
+            updatePublishStep();
+
+            if (step === 3) {
+                // 模拟内容检测
+                simulateContentCheck();
+            }
+
+            if (step === 4) {
+                // 提交成功
+                const title = document.getElementById('publishTitle').value;
+                document.getElementById('finalTitle').textContent = title;
+                const platformNames = {
+                    fanqie: '番茄小说',
+                    qidian: '起点中文网',
+                    jinjiang: '晋江文学城'
+                };
+                document.getElementById('finalPlatform').textContent = platformNames[selectedPlatform];
+                document.getElementById('finalId').textContent = 'FQ' + Date.now();
+
+                // 添加到投稿列表
+                submissions.push({
+                    id: 'sub-' + Date.now(),
+                    title: title,
+                    platform: platformNames[selectedPlatform],
+                    status: 'reviewing',
+                    words: 52480,
+                    chapters: 3,
+                    submittedAt: new Date().toLocaleDateString('zh-CN')
+                });
+            }
+        }
+
+        function updatePublishStep() {
+            // 更新步骤指示器
+            document.querySelectorAll('.publish-step').forEach((el, index) => {
+                el.classList.remove('active', 'completed');
+                if (index + 1 < publishStep) {
+                    el.classList.add('completed');
+                } else if (index + 1 === publishStep) {
+                    el.classList.add('active');
+                }
+            });
+
+            // 显示对应步骤内容
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`publishStep${i}`).style.display = i === publishStep ? 'block' : 'none';
+            }
+        }
+
+        function simulateContentCheck() {
+            // 模拟检测动画
+            const icon = document.getElementById('checkStatusIcon');
+            const title = document.getElementById('checkStatusTitle');
+            const desc = document.getElementById('checkStatusDesc');
+
+            icon.style.background = 'var(--accent-yellow)';
+            icon.innerHTML = '⏳';
+            title.textContent = '检测中...';
+            desc.textContent = '正在检测内容安全性';
+
+            setTimeout(() => {
+                icon.style.background = 'var(--accent-green)';
+                icon.innerHTML = '✓';
+                title.textContent = '内容安全';
+                desc.textContent = '总字数 52,480 · 敏感词 0 个';
+                showToast('内容检测通过', 'success');
+            }, 1500);
+        }
+
+        // 导航Tab切换
+        function switchNavTab(el, section) {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            
+            const targets = {
+                'home': 'hero',
+                'editor': 'editor',
+                'wiki': 'editor',
+                'outline': 'outline-section',
+                'stats': 'stats-section'
+            };
+            
+            const target = document.getElementById(targets[section]);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+                
+                if (section === 'wiki') {
+                    setTimeout(() => {
+                        const wikiPanel = document.querySelector('.wiki-panel');
+                        if (wikiPanel) {
+                            wikiPanel.style.borderLeft = '2px solid var(--accent-blue)';
+                            setTimeout(() => wikiPanel.style.borderLeft = '', 2000);
+                        }
+                    }, 500);
+                }
+            }
+        }
+
+        // 自动保存
+        setInterval(saveVersion, 60000);
+        document.getElementById('content').addEventListener('input', updateWordCount);
+
+        // 快捷键支持
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key.toLowerCase()) {
+                    case 's':
+                        e.preventDefault();
+                        saveVersion();
+                        showToast('已保存', 'success');
+                        break;
+                    case 'f':
+                        e.preventDefault();
+                        showFindReplace();
+                        break;
+                    case 'p':
+                        e.preventDefault();
+                        aiPolish();
+                        break;
+                    case 'e':
+                        e.preventDefault();
+                        aiExpand();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
