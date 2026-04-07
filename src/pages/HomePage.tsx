@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import HeroSection from '../components/HeroSection'
 import WorkflowSection from '../components/WorkflowSection'
+import AIAgentsSection from '../components/AIAgentsSection'
 import FeaturesGrid from '../components/FeaturesGrid'
 import RoadmapSection from '../components/RoadmapSection'
 import StatCard from '../components/StatCard'
@@ -72,6 +73,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <AIAgentsSection />
 
       <section className="chapter py-12">
         <div className="max-w-6xl mx-auto px-6 text-center mb-6">
